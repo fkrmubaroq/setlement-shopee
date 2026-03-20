@@ -1,0 +1,9 @@
+node_modules
+dist
+.env
+.env*
+uploads/
+backend.md
+frontend.md
+monorepo-setup.md
+.DS_Store

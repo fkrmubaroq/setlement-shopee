@@ -1,4 +1,4 @@
-import type { ApiResponse } from "shared-types";
+import type { ApiResponse } from "@setlement-shopee/types";
 
 const BASE_URL = "/api";
 

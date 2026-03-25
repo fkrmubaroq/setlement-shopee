@@ -25,8 +25,8 @@ A clean, scalable API built following SOLID principles and MVC architecture.
 - **Architecture:** Controller → Service → Repository
 
 ### Packages (`packages/`)
-- **`shared-types`**: Strictly typed shared data contracts (DTOs) used by both frontend and backend.
-- **`shared-utils`**: Common utility functions shared across the workspace.
+- **`@setlement-shopee/types`**: Strictly typed shared data contracts (DTOs) used by both frontend and backend.
+- **`@setlement-shopee/utils`**: Common utility functions shared across the workspace.
 
 ---
 
@@ -92,12 +92,12 @@ To run scripts for specific applications, use the `--filter` flag:
 
 - **Frontend Only:**
   ```bash
-  pnpm --filter @boilerplate/frontend dev
+  pnpm --filter @setlement-shopee/frontend dev
   ```
 
 - **Backend Only:**
   ```bash
-  pnpm --filter @boilerplate/backend dev
+  pnpm --filter @setlement-shopee/backend dev
   ```
 
 ---

@@ -1,4 +1,4 @@
-import type { AuthResponse, AuthUser } from "shared-types";
+import type { AuthResponse, AuthUser } from "@setlement-shopee/types";
 import { AppError } from "../../middlewares/error-handler";
 import { createUser, findUserByEmail } from "./auth.repository";
 import type { LoginInput, RegisterInput } from "./auth.schema";

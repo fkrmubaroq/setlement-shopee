@@ -12,6 +12,10 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AdminRouteRouteImport } from './routes/admin/route'
+import { Route as AdminHppProdukRouteImport } from './routes/admin/hpp-produk'
+import { Route as AdminBrandRouteImport } from './routes/admin/brand'
+import { Route as AdminDataShopeeIndexRouteImport } from './routes/admin/data-shopee/index'
+import { Route as AdminDataShopeeIdRouteImport } from './routes/admin/data-shopee/$id'
 
 const RegisterLazyRouteImport = createFileRoute('/register')()
 const LoginLazyRouteImport = createFileRoute('/login')()
@@ -37,37 +41,94 @@ const IndexLazyRoute = IndexLazyRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+const AdminHppProdukRoute = AdminHppProdukRouteImport.update({
+  id: '/hpp-produk',
+  path: '/hpp-produk',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminBrandRoute = AdminBrandRouteImport.update({
+  id: '/brand',
+  path: '/brand',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminDataShopeeIndexRoute = AdminDataShopeeIndexRouteImport.update({
+  id: '/data-shopee/',
+  path: '/data-shopee/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminDataShopeeIdRoute = AdminDataShopeeIdRouteImport.update({
+  id: '/data-shopee/$id',
+  path: '/data-shopee/$id',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
-  '/admin': typeof AdminRouteRoute
+  '/admin': typeof AdminRouteRouteWithChildren
   '/login': typeof LoginLazyRoute
   '/register': typeof RegisterLazyRoute
+  '/admin/brand': typeof AdminBrandRoute
+  '/admin/hpp-produk': typeof AdminHppProdukRoute
+  '/admin/data-shopee/$id': typeof AdminDataShopeeIdRoute
+  '/admin/data-shopee/': typeof AdminDataShopeeIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
-  '/admin': typeof AdminRouteRoute
+  '/admin': typeof AdminRouteRouteWithChildren
   '/login': typeof LoginLazyRoute
   '/register': typeof RegisterLazyRoute
+  '/admin/brand': typeof AdminBrandRoute
+  '/admin/hpp-produk': typeof AdminHppProdukRoute
+  '/admin/data-shopee/$id': typeof AdminDataShopeeIdRoute
+  '/admin/data-shopee': typeof AdminDataShopeeIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexLazyRoute
-  '/admin': typeof AdminRouteRoute
+  '/admin': typeof AdminRouteRouteWithChildren
   '/login': typeof LoginLazyRoute
   '/register': typeof RegisterLazyRoute
+  '/admin/brand': typeof AdminBrandRoute
+  '/admin/hpp-produk': typeof AdminHppProdukRoute
+  '/admin/data-shopee/$id': typeof AdminDataShopeeIdRoute
+  '/admin/data-shopee/': typeof AdminDataShopeeIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/login' | '/register'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/login'
+    | '/register'
+    | '/admin/brand'
+    | '/admin/hpp-produk'
+    | '/admin/data-shopee/$id'
+    | '/admin/data-shopee/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin' | '/login' | '/register'
-  id: '__root__' | '/' | '/admin' | '/login' | '/register'
+  to:
+    | '/'
+    | '/admin'
+    | '/login'
+    | '/register'
+    | '/admin/brand'
+    | '/admin/hpp-produk'
+    | '/admin/data-shopee/$id'
+    | '/admin/data-shopee'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/login'
+    | '/register'
+    | '/admin/brand'
+    | '/admin/hpp-produk'
+    | '/admin/data-shopee/$id'
+    | '/admin/data-shopee/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
-  AdminRouteRoute: typeof AdminRouteRoute
+  AdminRouteRoute: typeof AdminRouteRouteWithChildren
   LoginLazyRoute: typeof LoginLazyRoute
   RegisterLazyRoute: typeof RegisterLazyRoute
 }
@@ -102,12 +163,58 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexLazyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/hpp-produk': {
+      id: '/admin/hpp-produk'
+      path: '/hpp-produk'
+      fullPath: '/admin/hpp-produk'
+      preLoaderRoute: typeof AdminHppProdukRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/brand': {
+      id: '/admin/brand'
+      path: '/brand'
+      fullPath: '/admin/brand'
+      preLoaderRoute: typeof AdminBrandRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/data-shopee/': {
+      id: '/admin/data-shopee/'
+      path: '/data-shopee'
+      fullPath: '/admin/data-shopee/'
+      preLoaderRoute: typeof AdminDataShopeeIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/data-shopee/$id': {
+      id: '/admin/data-shopee/$id'
+      path: '/data-shopee/$id'
+      fullPath: '/admin/data-shopee/$id'
+      preLoaderRoute: typeof AdminDataShopeeIdRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
   }
 }
 
+interface AdminRouteRouteChildren {
+  AdminBrandRoute: typeof AdminBrandRoute
+  AdminHppProdukRoute: typeof AdminHppProdukRoute
+  AdminDataShopeeIdRoute: typeof AdminDataShopeeIdRoute
+  AdminDataShopeeIndexRoute: typeof AdminDataShopeeIndexRoute
+}
+
+const AdminRouteRouteChildren: AdminRouteRouteChildren = {
+  AdminBrandRoute: AdminBrandRoute,
+  AdminHppProdukRoute: AdminHppProdukRoute,
+  AdminDataShopeeIdRoute: AdminDataShopeeIdRoute,
+  AdminDataShopeeIndexRoute: AdminDataShopeeIndexRoute,
+}
+
+const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
+  AdminRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
-  AdminRouteRoute: AdminRouteRoute,
+  AdminRouteRoute: AdminRouteRouteWithChildren,
   LoginLazyRoute: LoginLazyRoute,
   RegisterLazyRoute: RegisterLazyRoute,
 }

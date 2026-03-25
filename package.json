@@ -2,8 +2,12 @@
   "name": "settlement-shopee",
   "private": true,
   "scripts": {
-    "dev": "pnpm --parallel --filter ./apps/* dev",
-    "build": "pnpm --filter ./apps/* build",
-    "lint": "pnpm -r lint"
+    "dev": "concurrently -c \"cyan,magenta,yellow,blue\" -n \"frontend,backend,types,utils\" \"pnpm --filter @setlement-shopee/frontend dev\" \"pnpm --filter @setlement-shopee/backend dev\" \"pnpm --filter @setlement-shopee/types dev\" \"pnpm --filter @setlement-shopee/utils dev\"",
+    "build": "concurrently -c \"cyan,magenta,yellow,blue\" -n \"frontend,backend,types,utils\" \"pnpm --filter @setlement-shopee/frontend build\" \"pnpm --filter @setlement-shopee/backend build\" \"pnpm --filter @setlement-shopee/types build\" \"pnpm --filter @setlement-shopee/utils build\"",
+    "lint": "concurrently -c \"cyan,magenta\" -n \"frontend,backend\" \"pnpm --filter @setlement-shopee/frontend lint\" \"pnpm --filter @setlement-shopee/backend lint\"",
+    "install:all": "pnpm install"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
   }
 }

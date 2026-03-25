@@ -8,7 +8,6 @@ interface SignOutDialogProps {
 export function SignOutDialog({ open, onOpenChange }: SignOutDialogProps) {
 
     const handleSignOut = () => {
-        const currentPath = location.href
 
     }
 

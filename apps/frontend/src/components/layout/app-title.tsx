@@ -5,7 +5,6 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar'
-import { Link } from '@tanstack/react-router'
 
 export function AppTitle() {
   const { setOpenMobile } = useSidebar()
@@ -20,14 +19,14 @@ export function AppTitle() {
           <div>
             <div className="text-2xl font-bold group-data-[state=expanded]:hidden">B</div>
 
-            <Link
+            <a
               href='/'
               onClick={() => setOpenMobile(false)}
               className='grid flex-1 text-start text-sm leading-tight group-data-[state=collapsed]:hidden border'
             >
               <span className='truncate font-bold'>Blogify</span>
               <span className='truncate text-xs'>Admin Panel</span>
-            </Link>
+            </a>
           </div>
         </SidebarMenuButton>
       </SidebarMenuItem>

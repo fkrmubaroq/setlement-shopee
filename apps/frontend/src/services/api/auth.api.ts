@@ -1,4 +1,4 @@
-import type { AuthResponse, AuthUser, LoginRequest, RegisterRequest } from "shared-types";
+import type { AuthResponse, AuthUser, LoginRequest, RegisterRequest } from "@setlement-shopee/types";
 import { httpClient } from "../http-client";
 
 type AuthResponseData = {

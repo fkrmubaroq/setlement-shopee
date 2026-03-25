@@ -1,4 +1,4 @@
-import type { AuthUser } from "shared-types";
+import type { AuthUser } from "@setlement-shopee/types";
 import { create } from "zustand";
 
 type AuthState = {

@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
-import type { ApiResponse } from "shared-types";
+import type { ApiResponse } from "@setlement-shopee/types";
 import type { ZodSchema } from "zod";
 
 type ValidationTarget = "body" | "params" | "query";

@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
-import type { ApiResponse, AuthResponse, AuthUser } from "shared-types";
+import type { ApiResponse, AuthResponse, AuthUser } from "@setlement-shopee/types";
 import { sendCreated, sendSuccess } from "../../utils/response";
 import type { LoginInput, RegisterInput } from "./auth.schema";
 import * as authService from "./auth.service";

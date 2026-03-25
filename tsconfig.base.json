@@ -14,8 +14,8 @@
     "sourceMap": true,
     "baseUrl": ".",
     "paths": {
-      "shared-types": ["packages/shared-types/src"],
-      "shared-utils": ["packages/shared-utils/src"]
+      "@setlement-shopee/types": ["packages/shared-types/src"],
+      "@setlement-shopee/utils": ["packages/shared-utils/src"]
     }
   }
 }

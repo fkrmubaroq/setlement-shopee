@@ -1,4 +1,4 @@
-import type { AuthUser, LoginRequest, RegisterRequest } from "shared-types";
+import type { AuthUser, LoginRequest, RegisterRequest } from "@setlement-shopee/types";
 
 export type AuthTokenPayload = {
   userId: number;

@@ -1,35 +1,35 @@
 
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, User } from "lucide-react";
 import { Link } from "@tanstack/react-router";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { Search, User } from "lucide-react";
 
 export function Navbar() {
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/80 backdrop-blur-sm">
       <div className="container flex h-16 items-center justify-between py-4 mx-auto">
         <div className="flex items-center gap-6">
-          <Link href="/" className="flex items-center gap-2">
+          <Link to="/" className="flex items-center gap-2">
             <span className="text-2xl font-bold text-primary">Blogify</span>
           </Link>
 
           <nav className="hidden md:flex items-center gap-6">
-            <Link href="/" className="text-sm font-medium hover:text-primary">
+            <Link to="/" className="text-sm font-medium hover:text-primary">
               Home
             </Link>
-            <Link
+            <a
               href="/articles"
               className="text-sm font-medium hover:text-primary"
             >
               Articles
-            </Link>
-            <Link
+            </a>
+            <a
               href="/authors"
               className="text-sm font-medium hover:text-primary"
             >
               Authors
-            </Link>
+            </a>
           </nav>
         </div>
 

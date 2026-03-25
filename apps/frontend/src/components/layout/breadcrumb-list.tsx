@@ -1,6 +1,5 @@
-import { ChevronRight } from "lucide-react";
 import { Link, useLocation } from "@tanstack/react-router";
-import { cn } from "@/lib/utils";
+import { ChevronRight } from "lucide-react";
 
 type HeaderTextItem = {
     text: string;
@@ -43,7 +42,7 @@ export default function BreadcrumbList() {
 
 function LinkItem({ item }: { item: HeaderTextItem }) {
     return (
-        <Link href={item.href} className="text-sm">
+        <Link to={item.href} className="text-sm">
             {item.text}
         </Link>
     );

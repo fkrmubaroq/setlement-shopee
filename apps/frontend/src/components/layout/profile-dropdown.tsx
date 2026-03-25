@@ -12,7 +12,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import useDialogState from '@/hooks/use-dialog-state'
-import { Link } from '@tanstack/react-router'
 
 export function ProfileDropdown() {
   const [open, setOpen] = useDialogState()
@@ -40,22 +39,22 @@ export function ProfileDropdown() {
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
             <DropdownMenuItem asChild>
-              <Link href='/settings'>
+              <a href='/settings'>
                 Profile
                 <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-              </Link>
+              </a>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link href='/settings'>
+              <a href='/settings'>
                 Billing
                 <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-              </Link>
+              </a>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link href='/settings'>
+              <a href='/settings'>
                 Settings
                 <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-              </Link>
+              </a>
             </DropdownMenuItem>
             <DropdownMenuItem>New Team</DropdownMenuItem>
           </DropdownMenuGroup>

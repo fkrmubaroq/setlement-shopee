@@ -23,7 +23,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "shared-types": ["../../packages/shared-types/src"]
+      "@setlement-shopee/types": ["../../packages/shared-types/src"]
     }
   },
   "include": ["src"]

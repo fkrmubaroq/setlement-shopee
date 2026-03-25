@@ -1,5 +1,5 @@
 import type { Response } from "express";
-import type { ApiResponse } from "shared-types";
+import type { ApiResponse } from "@setlement-shopee/types";
 
 export const sendSuccess = <T>(
   res: Response<ApiResponse<T>>,

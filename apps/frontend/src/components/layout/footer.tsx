@@ -8,7 +8,7 @@ export function Footer() {
       <div className="container px-4 md:px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-3">
-            <Link href="/" className="inline-block">
+            <Link to="/" className="inline-block">
               <span className="text-xl font-bold text-primary">Blogify</span>
             </Link>
             <p className="text-sm text-muted-foreground">
@@ -20,28 +20,28 @@ export function Footer() {
             <h3 className="font-medium">Explore</h3>
             <ul className="space-y-1">
               <li>
-                <Link
+                <a
                   href="/articles"
                   className="text-sm text-muted-foreground hover:text-primary"
                 >
                   All Articles
-                </Link>
+                </a>
               </li>
               <li>
-                <Link
+                <a
                   href="/authors"
                   className="text-sm text-muted-foreground hover:text-primary"
                 >
                   Authors
-                </Link>
+                </a>
               </li>
               <li>
-                <Link
+                <a
                   href="/tags"
                   className="text-sm text-muted-foreground hover:text-primary"
                 >
                   Tags
-                </Link>
+                </a>
               </li>
             </ul>
           </div>
@@ -50,28 +50,28 @@ export function Footer() {
             <h3 className="font-medium">Company</h3>
             <ul className="space-y-1">
               <li>
-                <Link
+                <a
                   href="/about"
                   className="text-sm text-muted-foreground hover:text-primary"
                 >
                   About
-                </Link>
+                </a>
               </li>
               <li>
-                <Link
+                <a
                   href="/contact"
                   className="text-sm text-muted-foreground hover:text-primary"
                 >
                   Contact
-                </Link>
+                </a>
               </li>
               <li>
-                <Link
+                <a
                   href="/careers"
                   className="text-sm text-muted-foreground hover:text-primary"
                 >
                   Careers
-                </Link>
+                </a>
               </li>
             </ul>
           </div>
@@ -80,28 +80,28 @@ export function Footer() {
             <h3 className="font-medium">Legal</h3>
             <ul className="space-y-1">
               <li>
-                <Link
+                <a
                   href="/privacy"
                   className="text-sm text-muted-foreground hover:text-primary"
                 >
                   Privacy Policy
-                </Link>
+                </a>
               </li>
               <li>
-                <Link
+                <a
                   href="/terms"
                   className="text-sm text-muted-foreground hover:text-primary"
                 >
                   Terms of Service
-                </Link>
+                </a>
               </li>
               <li>
-                <Link
+                <a
                   href="/cookies"
                   className="text-sm text-muted-foreground hover:text-primary"
                 >
                   Cookie Policy
-                </Link>
+                </a>
               </li>
             </ul>
           </div>

@@ -1,0 +1,20 @@
+import { axiosInstance } from "@/lib/axios";
+import type { ApiResponse, DataShopee } from "@setlement-shopee/types";
+
+export const dataShopeeApi = {
+  getAllDataShopee: async (): Promise<ApiResponse<DataShopee[]>> => {
+    return await axiosInstance.get("/data-shopee");
+  },
+
+  getDataShopeeById: async (id: number): Promise<ApiResponse<DataShopee>> => {
+    return await axiosInstance.get(`/data-shopee/${id}`);
+  },
+
+  createDataShopee: async (formData: FormData): Promise<ApiResponse<DataShopee>> => {
+    return await axiosInstance.post("/data-shopee", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  },
+};

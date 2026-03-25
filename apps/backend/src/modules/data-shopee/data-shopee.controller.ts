@@ -1,5 +1,9 @@
 import { ExcelReader } from "@/utils/excel";
-import type { ApiResponse, CreateDataShopeeRequest, DataShopee } from "@setlement-shopee/types";
+import type {
+  ApiResponse,
+  CreateDataShopeeRequest,
+  DataShopee,
+} from "@setlement-shopee/types";
 import type { NextFunction, Request, Response } from "express";
 import { AppError } from "../../middlewares/error-handler";
 import { sendCreated, sendSuccess } from "../../utils/response";
@@ -9,7 +13,7 @@ import * as dataShopeeService from "./data-shopee.service";
 export const getAllDataShopee = async (
   _req: Request,
   res: Response<ApiResponse<DataShopee[]>>,
-  next: NextFunction
+  next: NextFunction,
 ): Promise<void> => {
   try {
     const data = await dataShopeeService.getAllDataShopee();
@@ -21,21 +25,33 @@ export const getAllDataShopee = async (
 
 export const getDataShopeeById = async (
   req: Request<{ id: string }>,
-  res: Response<ApiResponse<DataShopee>>,
-  next: NextFunction
-): Promise<void> => {
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const id = parseInt(req.params.id, 10);
     const dataShopee = await dataShopeeService.getDataShopeeById(id);
-    
+
     // Example usage of ExcelReader with chaining
-    const { data:dataPenghasilanSaya, total } = dataShopeeService.parsedDataPenghasilanSaya(dataShopee.shopee_penghasilan_saya);
-    const dataOrdersFiltered = dataShopeeService.calculateOrders(dataShopee.shopee_pesanan_saya, dataPenghasilanSaya);
-    const dataHpp = await getHppProdukByBrandId(dataShopee.id_brand)
-    console.log(dataHpp)
+    const { data: dataPenghasilanSaya, total } =
+      dataShopeeService.parsedDataPenghasilanSaya(
+        dataShopee.shopee_penghasilan_saya,
+      );
+
+    const dataOrdersFiltered = dataShopeeService.calculateOrders(
+      dataShopee.shopee_pesanan_saya,
+      dataPenghasilanSaya,
+    );
+    const dataHpp = await getHppProdukByBrandId(dataShopee.id_brand);
+
+    const dataMatchHppAndOrders = dataShopeeService.getMatchHppAndOrder(
+      dataOrdersFiltered,
+      dataHpp,
+    );
+
     // const shopeePesananSaya = await dataShopeeService.getShopeePesananSayaById(id);
     // const shopeeBiayaIklan = await dataShopeeService.getShopeeBiayaIklanById(id);
-    sendSuccess(res, dataShopee, "Berhasil mengambil detail data shopee");
+    res.status(200).json(dataMatchHppAndOrders).end();
   } catch (error) {
     next(error);
   }
@@ -44,14 +60,16 @@ export const getDataShopeeById = async (
 export const createDataShopee = async (
   req: Request<unknown, ApiResponse<DataShopee>, any>,
   res: Response<ApiResponse<DataShopee>>,
-  next: NextFunction
+  next: NextFunction,
 ): Promise<void> => {
   try {
     const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-    
-    if (!files?.shopee_penghasilan_saya?.[0] || 
-        !files?.shopee_pesanan_saya?.[0] || 
-        !files?.shopee_biaya_iklan?.[0]) {
+
+    if (
+      !files?.shopee_penghasilan_saya?.[0] ||
+      !files?.shopee_pesanan_saya?.[0] ||
+      !files?.shopee_biaya_iklan?.[0]
+    ) {
       throw new AppError("Ketiga file Shopee wajib diunggah", 400);
     }
 
@@ -77,8 +95,61 @@ export const createDataShopee = async (
 /**
  * Helper function to parse specific cell from uploads
  */
-export function parsedDataFromExcel(fileName: string, sheet: string, cell: string) {
-  return ExcelReader.fromUploads(fileName)
-    .sheet(sheet)
-    .getCellValue(cell);
+export function parsedDataFromExcel(
+  fileName: string,
+  sheet: string,
+  cell: string,
+) {
+  return ExcelReader.fromUploads(fileName).sheet(sheet).getCellValue(cell);
 }
+
+export const deleteDataShopee = async (
+  req: Request<{ id: string }>,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    await dataShopeeService.deleteDataShopee(id);
+    sendSuccess(res, null, "Berhasil menghapus data shopee");
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateDataShopee = async (
+  req: Request<{ id: string }>,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    const files = req.files as
+      | { [fieldname: string]: Express.Multer.File[] }
+      | undefined;
+
+    const body: any = {
+      id_brand: req.body.id_brand ? parseInt(req.body.id_brand, 10) : undefined,
+      dari_tanggal: req.body.dari_tanggal || undefined,
+      sampai_tanggal: req.body.sampai_tanggal || undefined,
+    };
+
+    const newFiles: any = {};
+    if (files?.shopee_penghasilan_saya?.[0])
+      newFiles.shopee_penghasilan_saya =
+        files.shopee_penghasilan_saya[0].filename;
+    if (files?.shopee_pesanan_saya?.[0])
+      newFiles.shopee_pesanan_saya = files.shopee_pesanan_saya[0].filename;
+    if (files?.shopee_biaya_iklan?.[0])
+      newFiles.shopee_biaya_iklan = files.shopee_biaya_iklan[0].filename;
+
+    const data = await dataShopeeService.updateDataShopee(
+      id,
+      body,
+      Object.keys(newFiles).length ? newFiles : undefined,
+    );
+    sendSuccess(res, data, "Berhasil memperbarui data shopee");
+  } catch (error) {
+    next(error);
+  }
+};

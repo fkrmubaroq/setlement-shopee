@@ -14,7 +14,19 @@ router.post(
     { name: "shopee_pesanan_saya", maxCount: 1 },
     { name: "shopee_biaya_iklan", maxCount: 1 },
   ]),
-  dataShopeeController.createDataShopee
+  dataShopeeController.createDataShopee,
 );
+
+router.put(
+  "/:id",
+  upload.fields([
+    { name: "shopee_penghasilan_saya", maxCount: 1 },
+    { name: "shopee_pesanan_saya", maxCount: 1 },
+    { name: "shopee_biaya_iklan", maxCount: 1 },
+  ]),
+  dataShopeeController.updateDataShopee,
+);
+
+router.delete("/:id", dataShopeeController.deleteDataShopee);
 
 export default router;

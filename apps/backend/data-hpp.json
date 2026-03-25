@@ -1,0 +1,832 @@
+[
+    {
+        "id": 84,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "64360",
+        "variasi_1": "Hitam Doff,T.200cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 85,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "64360",
+        "variasi_1": "Coklat Tua Doff,T.200cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 86,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "64360",
+        "variasi_1": "Abu Muda Doff,T.200cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 87,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "64360",
+        "variasi_1": "Pink Doff,T.200cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 88,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "64360",
+        "variasi_1": "Abu Tua Doff,T.200cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 89,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "64360",
+        "variasi_1": "Coklat Muda Doff,T.200cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 90,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "64360",
+        "variasi_1": "Mocca Doff,T.200cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 91,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "64360",
+        "variasi_1": "Navy Doff,T.200cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 92,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "64360",
+        "variasi_1": "Ungu Doff,T.200cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 93,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "64360",
+        "variasi_1": "Cream DOff,T.200cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 94,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "64360",
+        "variasi_1": "Putih Doff,T.200cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 95,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "64360",
+        "variasi_1": "Hijau Doff,T.200cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 96,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "74110",
+        "variasi_1": "Abu Muda Doff,T.250cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 97,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "74110",
+        "variasi_1": "Abu Tua Doff,T.250cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 98,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "74110",
+        "variasi_1": "Ungu Doff,T.250cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 99,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "74110",
+        "variasi_1": "Hitam Doff,T.250cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 100,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "74110",
+        "variasi_1": "Coklat Tua Doff,T.250cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 101,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "74110",
+        "variasi_1": "Mocca Doff,T.250cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 102,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "74110",
+        "variasi_1": "Navy Doff,T.250cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 103,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "74110",
+        "variasi_1": "Coklat Muda Doff,T.250cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 104,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "74110",
+        "variasi_1": "Pink Doff,T.250cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 105,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "54610",
+        "variasi_1": "Abu Tua Doff,T.150cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 106,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "54610",
+        "variasi_1": "Abu Muda Doff,T.150cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 107,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "54610",
+        "variasi_1": "Coklat Tua Doff,T.150cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 108,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "54610",
+        "variasi_1": "Coklat Muda Doff,T.150cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 109,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "54610",
+        "variasi_1": "Hitam Doff,T.150cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 110,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "54610",
+        "variasi_1": "Mocca Doff,T.150cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 111,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "54610",
+        "variasi_1": "Navy Doff,T.150cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 112,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "54610",
+        "variasi_1": "Cream DOff,T.150cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 113,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "60460",
+        "variasi_1": "Mocca Doff,T.180cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 114,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "60460",
+        "variasi_1": "Abu Muda Doff,T.180cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 115,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "60460",
+        "variasi_1": "Pink Doff,T.180cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 116,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "60460",
+        "variasi_1": "Coklat Muda Doff,T.180cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 117,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "60460",
+        "variasi_1": "Abu Tua Doff,T.180cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 118,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "60460",
+        "variasi_1": "Cream DOff,T.180cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 119,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "60460",
+        "variasi_1": "Navy Doff,T.180cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 120,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "60460",
+        "variasi_1": "Coklat Tua Doff,T.180cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 121,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "60460",
+        "variasi_1": "Hitam Doff,T.180cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 122,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "60460",
+        "variasi_1": "Putih Doff,T.180cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 123,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "70210",
+        "variasi_1": "Abu Tua Doff,T.230cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 124,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "70210",
+        "variasi_1": "Navy Doff,T.230cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 125,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "70210",
+        "variasi_1": "Abu Muda Doff,T.230cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 126,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "70210",
+        "variasi_1": "Hitam Doff,T.230cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 127,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "70210",
+        "variasi_1": "Coklat Tua Doff,T.230cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 128,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "70210",
+        "variasi_1": "Pink Doff,T.230cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 129,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "70210",
+        "variasi_1": "Mocca Doff,T.230cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 130,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "70210",
+        "variasi_1": "Coklat Muda Doff,T.230cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 131,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "70210",
+        "variasi_1": "Cream DOff,T.230cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 132,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "78010",
+        "variasi_1": "Coklat Tua Doff,T.270cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 133,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "78010",
+        "variasi_1": "Abu Tua Doff,T.270cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 134,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "78010",
+        "variasi_1": "Coklat Muda Doff,T.270cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 135,
+        "id_brand": 1,
+        "nama_produk": "MTR 6 gelombang",
+        "hpp": "78010",
+        "variasi_1": "Abu Muda Doff,T.270cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 136,
+        "id_brand": 1,
+        "nama_produk": "MTR 9 gelombang",
+        "hpp": "106440",
+        "variasi_1": "Abu Tua Glossy,L9gelombang*T180cm",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 137,
+        "id_brand": 1,
+        "nama_produk": "MTR 9 gelombang",
+        "hpp": "106440",
+        "variasi_1": "Hitam doff,L9gelombang*T180cm",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 138,
+        "id_brand": 1,
+        "nama_produk": "MTR 9 gelombang",
+        "hpp": "106440",
+        "variasi_1": "Navy Doff,L9gelombang*T180cm",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 139,
+        "id_brand": 1,
+        "nama_produk": "MTR 9 gelombang",
+        "hpp": "106440",
+        "variasi_1": "Abu tua Doff,L9gelombang*T180cm",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 140,
+        "id_brand": 1,
+        "nama_produk": "MTR 9 gelombang",
+        "hpp": "114240",
+        "variasi_1": "Cream doff,L9gelombang*T200cm",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 141,
+        "id_brand": 1,
+        "nama_produk": "MTR 9 gelombang",
+        "hpp": "114240",
+        "variasi_1": "Coklat Muda Doff,L9gelombang*T200cm",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 142,
+        "id_brand": 1,
+        "nama_produk": "MTR 9 gelombang",
+        "hpp": "114240",
+        "variasi_1": "Biru Doff,L9gelombang*T200cm",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 143,
+        "id_brand": 1,
+        "nama_produk": "MTR 9 gelombang",
+        "hpp": "114240",
+        "variasi_1": "Coklat Tua doff,L9gelombang*T200cm",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 144,
+        "id_brand": 1,
+        "nama_produk": "MTR 9 gelombang",
+        "hpp": "125940",
+        "variasi_1": "Navy Doff,L9gelombang*T230cm",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 145,
+        "id_brand": 1,
+        "nama_produk": "MTR 9 gelombang",
+        "hpp": "125940",
+        "variasi_1": "Abu tua Doff,L9gelombang*T230cm",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 146,
+        "id_brand": 1,
+        "nama_produk": "MTR 9 gelombang",
+        "hpp": "133740",
+        "variasi_1": "Navy Doff,L9gelombang*T250cm",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 147,
+        "id_brand": 1,
+        "nama_produk": "MTR 9 gelombang",
+        "hpp": "133740",
+        "variasi_1": "Coklat Tua doff,L9gelombang*T250cm",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 148,
+        "id_brand": 1,
+        "nama_produk": "MTR 9 gelombang",
+        "hpp": "141540",
+        "variasi_1": "Coklat Muda Doff,L9gelombang*T270cm",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 149,
+        "id_brand": 1,
+        "nama_produk": "MTR 9 gelombang",
+        "hpp": "141540",
+        "variasi_1": "Navy Doff,L9gelombang*T270cm",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 150,
+        "id_brand": 1,
+        "nama_produk": "GLB 6 gelombang",
+        "hpp": "57585",
+        "variasi_1": "Abu Tua Glossy,T.150cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 151,
+        "id_brand": 1,
+        "nama_produk": "GLB 6 gelombang",
+        "hpp": "63960",
+        "variasi_1": "Abu Tua Glossy,T.180cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 152,
+        "id_brand": 1,
+        "nama_produk": "GLB 6 gelombang",
+        "hpp": "68210",
+        "variasi_1": "Abu Tua Glossy,T.200cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 153,
+        "id_brand": 1,
+        "nama_produk": "GLB 6 gelombang",
+        "hpp": "68210",
+        "variasi_1": "Abu Muda Glossy,T.200cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 154,
+        "id_brand": 1,
+        "nama_produk": "GLB 6 gelombang",
+        "hpp": "68210",
+        "variasi_1": "Merah Glossy,T.200cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 155,
+        "id_brand": 1,
+        "nama_produk": "GLB 6 gelombang",
+        "hpp": "68210",
+        "variasi_1": "Hitam Glossy,T.200cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 156,
+        "id_brand": 1,
+        "nama_produk": "GLB 6 gelombang",
+        "hpp": "74585",
+        "variasi_1": "Abu Tua Glossy,T.230cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 157,
+        "id_brand": 1,
+        "nama_produk": "GLB 6 gelombang",
+        "hpp": "74585",
+        "variasi_1": "Coklat Tua Glossy,T.230cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 158,
+        "id_brand": 1,
+        "nama_produk": "GLB 6 gelombang",
+        "hpp": "74585",
+        "variasi_1": "Orange Glossy,T.230cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 159,
+        "id_brand": 1,
+        "nama_produk": "GLB 6 gelombang",
+        "hpp": "78835",
+        "variasi_1": "Abu Tua Glossy,T.250cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 160,
+        "id_brand": 1,
+        "nama_produk": "GLB 6 gelombang",
+        "hpp": "78835",
+        "variasi_1": "Coklat Tua Glossy,T.250cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 161,
+        "id_brand": 1,
+        "nama_produk": "GLB 6 gelombang",
+        "hpp": "78835",
+        "variasi_1": "Gold Glossy,T.250cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 162,
+        "id_brand": 1,
+        "nama_produk": "GLB 6 gelombang",
+        "hpp": "80960",
+        "variasi_1": "Abu Tua Glossy,T.260cm*L.6gelombang",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 163,
+        "id_brand": 1,
+        "nama_produk": "kain bahan",
+        "hpp": "42500",
+        "variasi_1": "Abu Tua Glossy,panjang 100cm",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 164,
+        "id_brand": 1,
+        "nama_produk": "kain bahan",
+        "hpp": "39000",
+        "variasi_1": "Abu Tua Doff,panjang 100cm",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 165,
+        "id_brand": 1,
+        "nama_produk": "kain Bahan",
+        "hpp": "19500",
+        "variasi_1": "Abu Tua Doff,Panjang 50cm",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    },
+    {
+        "id": 166,
+        "id_brand": 1,
+        "nama_produk": "kain bahan",
+        "hpp": "21250",
+        "variasi_1": "Abu Tua Glossy,Panjang 50cm",
+        "variasi_2": null,
+        "created_at": "2026-03-25T06:54:49.000Z",
+        "updated_at": "2026-03-25T06:54:49.000Z"
+    }
+]

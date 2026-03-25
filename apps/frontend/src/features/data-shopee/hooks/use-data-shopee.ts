@@ -30,7 +30,31 @@ export const useCreateDataShopee = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (formData: FormData) => dataShopeeApi.createDataShopee(formData),
+    mutationFn: (formData: FormData) =>
+      dataShopeeApi.createDataShopee(formData),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: dataShopeeKeys.all });
+    },
+  });
+};
+
+export const useUpdateDataShopee = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, formData }: { id: number; formData: FormData }) =>
+      dataShopeeApi.updateDataShopee(id, formData),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: dataShopeeKeys.all });
+    },
+  });
+};
+
+export const useDeleteDataShopee = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: number) => dataShopeeApi.deleteDataShopee(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: dataShopeeKeys.all });
     },

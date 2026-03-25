@@ -10,11 +10,24 @@ export const dataShopeeApi = {
     return await axiosInstance.get(`/data-shopee/${id}`);
   },
 
-  createDataShopee: async (formData: FormData): Promise<ApiResponse<DataShopee>> => {
+  createDataShopee: async (
+    formData: FormData,
+  ): Promise<ApiResponse<DataShopee>> => {
     return await axiosInstance.post("/data-shopee", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
+      headers: { "Content-Type": "multipart/form-data" },
     });
+  },
+
+  updateDataShopee: async (
+    id: number,
+    formData: FormData,
+  ): Promise<ApiResponse<DataShopee>> => {
+    return await axiosInstance.put(`/data-shopee/${id}`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+  },
+
+  deleteDataShopee: async (id: number): Promise<ApiResponse<null>> => {
+    return await axiosInstance.delete(`/data-shopee/${id}`);
   },
 };

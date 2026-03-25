@@ -21,7 +21,10 @@ import { useGetBrands } from "@/features/brand/hooks/use-brand";
 import { ChevronLeft, ChevronRight, Search, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { useDeleteHppProduk, useGetHppProdukList } from "../hooks/use-hpp-produk";
+import {
+  useDeleteHppProduk,
+  useGetHppProdukList,
+} from "../hooks/use-hpp-produk";
 import { ClearHppProdukDialog } from "./clear-hpp-produk-dialog";
 import { CsvUploadDialog } from "./csv-upload-dialog";
 import { HppProdukFormSheet } from "./hpp-produk-form-dialog";
@@ -41,7 +44,11 @@ export function HppProdukTable() {
     return () => clearTimeout(handler);
   }, [search]);
 
-  const { data: response, isLoading, isError } = useGetHppProdukList({
+  const {
+    data: response,
+    isLoading,
+    isError,
+  } = useGetHppProdukList({
     page,
     limit,
     search: debouncedSearch || undefined,
@@ -61,14 +68,17 @@ export function HppProdukTable() {
 
   const handleDelete = (selectedIdBrand: number, id: number) => {
     if (confirm("Apakah anda yakin ingin menghapus HPP produk ini?")) {
-      deleteMutation.mutate({ idBrand: selectedIdBrand, id }, {
-        onSuccess: () => {
-          toast.success("HPP Produk berhasil dihapus!");
+      deleteMutation.mutate(
+        { idBrand: selectedIdBrand, id },
+        {
+          onSuccess: () => {
+            toast.success("HPP Produk berhasil dihapus!");
+          },
+          onError: (err: any) => {
+            toast.error(err.message || "Gagal menghapus HPP Produk");
+          },
         },
-        onError: (err: any) => {
-          toast.error(err.message || "Gagal menghapus HPP Produk");
-        },
-      });
+      );
     }
   };
 
@@ -76,12 +86,14 @@ export function HppProdukTable() {
     return new Intl.NumberFormat("id-ID", {
       style: "currency",
       currency: "IDR",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
     }).format(Number(angka));
   };
-  
+
   const getBrandName = (brandId: number) => {
     if (!brands) return "Unknown";
-    const brand = brands.find(b => b.id === brandId);
+    const brand = brands.find((b) => b.id === brandId);
     return brand ? brand.nama_brand : "Unknown";
   };
 
@@ -92,39 +104,46 @@ export function HppProdukTable() {
           <CardTitle className="text-xl font-bold text-gray-800 dark:text-gray-100">
             Daftar HPP Produk
           </CardTitle>
-          <p className="text-sm text-gray-500">Kelola master data harga pokok penjualan secara massal.</p>
+          <p className="text-sm text-gray-500">
+            Kelola master data harga pokok penjualan secara massal.
+          </p>
         </div>
         <div className="flex flex-wrap gap-2 items-center">
-            <ClearHppProdukDialog />
-            <CsvUploadDialog />
-            <HppProdukFormSheet />
+          <ClearHppProdukDialog />
+          <CsvUploadDialog />
+          <HppProdukFormSheet />
         </div>
       </CardHeader>
-      
+
       <div className="p-4 flex flex-col sm:flex-row gap-4 justify-between items-center bg-gray-50/50 dark:bg-gray-900/20">
-          <div className="relative w-full sm:w-80">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
-              <Input
-                type="text"
-                placeholder="Cari nama produk..."
-                className="pl-9 bg-white dark:bg-gray-900"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-          </div>
-          <div className="w-full sm:w-56">
-              <Select value={idBrand?.toString() || "all"} onValueChange={handleBrandChange}>
-                <SelectTrigger className="bg-white dark:bg-gray-900">
-                  <SelectValue placeholder="Semua Brand" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Semua Brand</SelectItem>
-                  {brands?.map(b => (
-                    <SelectItem key={b.id} value={b.id.toString()}>{b.nama_brand}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-          </div>
+        <div className="relative w-full sm:w-80">
+          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
+          <Input
+            type="text"
+            placeholder="Cari nama produk..."
+            className="pl-9 bg-white dark:bg-gray-900"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+        <div className="w-full sm:w-56">
+          <Select
+            value={idBrand?.toString() || "all"}
+            onValueChange={handleBrandChange}
+          >
+            <SelectTrigger className="bg-white dark:bg-gray-900">
+              <SelectValue placeholder="Semua Brand" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Semua Brand</SelectItem>
+              {brands?.map((b) => (
+                <SelectItem key={b.id} value={b.id.toString()}>
+                  {b.nama_brand}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
       <CardContent className="p-0 border-t">
@@ -138,21 +157,37 @@ export function HppProdukTable() {
                 <TableHead>Variasi 1</TableHead>
                 <TableHead>Variasi 2</TableHead>
                 <TableHead className="text-right">HPP (Rp)</TableHead>
-                <TableHead className="hidden md:table-cell text-right">Ditambahkan</TableHead>
+                <TableHead className="hidden md:table-cell text-right">
+                  Ditambahkan
+                </TableHead>
                 <TableHead className="text-right">Aksi</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {(isLoading || loadingBrands) ? (
+              {isLoading || loadingBrands ? (
                 Array.from({ length: limit }).map((_, i) => (
                   <TableRow key={i}>
-                    <TableCell><Skeleton className="h-4 w-8 mx-auto" /></TableCell>
-                    <TableCell><Skeleton className="h-4 w-[120px]" /></TableCell>
-                    <TableCell><Skeleton className="h-4 w-[200px]" /></TableCell>
-                    <TableCell><Skeleton className="h-4 w-[100px]" /></TableCell>
-                    <TableCell><Skeleton className="h-4 w-[100px]" /></TableCell>
-                    <TableCell><Skeleton className="h-4 w-[100px] ml-auto" /></TableCell>
-                    <TableCell className="hidden md:table-cell"><Skeleton className="h-4 w-[100px] ml-auto" /></TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-8 mx-auto" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-[120px]" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-[200px]" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-[100px]" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-[100px]" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-[100px] ml-auto" />
+                    </TableCell>
+                    <TableCell className="hidden md:table-cell">
+                      <Skeleton className="h-4 w-[100px] ml-auto" />
+                    </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
                         <Skeleton className="h-8 w-8 rounded shrink-0" />
@@ -163,15 +198,25 @@ export function HppProdukTable() {
                 ))
               ) : isError ? (
                 <TableRow>
-                  <TableCell colSpan={8} className="h-24 text-center text-red-500">
+                  <TableCell
+                    colSpan={8}
+                    className="h-24 text-center text-red-500"
+                  >
                     Gagal mengambil data HPP Produk.
                   </TableCell>
                 </TableRow>
               ) : hppProdukList.length > 0 ? (
                 hppProdukList.map((item) => (
-                  <TableRow key={item.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
-                    <TableCell className="text-center font-medium">{item.id}</TableCell>
-                    <TableCell className="text-blue-600 font-semibold">{getBrandName(item.id_brand)}</TableCell>
+                  <TableRow
+                    key={item.id}
+                    className="hover:bg-gray-50 dark:hover:bg-gray-800/50"
+                  >
+                    <TableCell className="text-center font-medium">
+                      {item.id}
+                    </TableCell>
+                    <TableCell className="text-blue-600 font-semibold">
+                      {getBrandName(item.id_brand)}
+                    </TableCell>
                     <TableCell className="font-semibold text-gray-700 dark:text-gray-200">
                       {item.nama_produk}
                     </TableCell>
@@ -182,10 +227,12 @@ export function HppProdukTable() {
                       {item.variasi_2 || "-"}
                     </TableCell>
                     <TableCell className="text-right font-medium text-emerald-600">
-                        {formatRupiah(item.hpp)}
+                      {formatRupiah(item.hpp)}
                     </TableCell>
                     <TableCell className="text-gray-500 hidden md:table-cell text-right">
-                      {item.created_at ? new Date(item.created_at).toLocaleDateString("id-ID") : "-"}
+                      {item.created_at
+                        ? new Date(item.created_at).toLocaleDateString("id-ID")
+                        : "-"}
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end items-center gap-1">
@@ -204,8 +251,13 @@ export function HppProdukTable() {
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={8} className="h-24 text-center text-gray-500">
-                    {search || idBrand ? "Tidak ada produk yang cocok dengan pencarian." : "Tidak ada data HPP Produk."}
+                  <TableCell
+                    colSpan={8}
+                    className="h-24 text-center text-gray-500"
+                  >
+                    {search || idBrand
+                      ? "Tidak ada produk yang cocok dengan pencarian."
+                      : "Tidak ada data HPP Produk."}
                   </TableCell>
                 </TableRow>
               )}
@@ -215,29 +267,30 @@ export function HppProdukTable() {
       </CardContent>
       {meta && meta.totalPages > 0 && (
         <div className="flex flex-col sm:flex-row items-center justify-between p-4 border-t bg-gray-50 dark:bg-gray-900/50 rounded-b-lg gap-4">
-           <div className="text-sm text-gray-500 font-medium">
-             Halaman {meta.page} dari {meta.totalPages} (Total: {meta.total} produk)
-           </div>
-           <div className="flex items-center gap-2">
-             <Button
-               variant="outline"
-               size="sm"
-               disabled={meta.page <= 1}
-               onClick={() => setPage(p => Math.max(1, p - 1))}
-               className="bg-white dark:bg-gray-800"
-             >
-               <ChevronLeft className="h-4 w-4 mr-1" /> Sebelumnya
-             </Button>
-             <Button
-               variant="outline"
-               size="sm"
-               disabled={meta.page >= meta.totalPages}
-               onClick={() => setPage(p => p + 1)}
-               className="bg-white dark:bg-gray-800"
-             >
-               Selanjutnya <ChevronRight className="h-4 w-4 ml-1" />
-             </Button>
-           </div>
+          <div className="text-sm text-gray-500 font-medium">
+            Halaman {meta.page} dari {meta.totalPages} (Total: {meta.total}{" "}
+            produk)
+          </div>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={meta.page <= 1}
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              className="bg-white dark:bg-gray-800"
+            >
+              <ChevronLeft className="h-4 w-4 mr-1" /> Sebelumnya
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={meta.page >= meta.totalPages}
+              onClick={() => setPage((p) => p + 1)}
+              className="bg-white dark:bg-gray-800"
+            >
+              Selanjutnya <ChevronRight className="h-4 w-4 ml-1" />
+            </Button>
+          </div>
         </div>
       )}
     </Card>

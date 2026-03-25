@@ -1,8 +1,9 @@
 import type { HppProduk } from "@setlement-shopee/types";
 import type { ResultSetHeader, RowDataPacket } from "mysql2/promise";
 import { pool } from "../../config/db";
+import { onlyNumber } from "@/utils/parse";
 
-type HppProdukRow = RowDataPacket & HppProduk;
+export type HppProdukRow = RowDataPacket & HppProduk;
 
 interface FindAllHppProdukParams {
   page: number;
@@ -11,7 +12,15 @@ interface FindAllHppProdukParams {
   idBrand?: number;
 }
 
-export const findAllHppProduk = async ({ page, limit, search, idBrand }: FindAllHppProdukParams): Promise<{ data: HppProdukRow[]; total: number }> => {
+export const findAllHppProduk = async ({
+  page,
+  limit,
+  search,
+  idBrand,
+}: FindAllHppProdukParams): Promise<{
+  data: HppProdukRow[];
+  total: number;
+}> => {
   const offset = (page - 1) * limit;
 
   let query = "SELECT * FROM hpp_produk";
@@ -36,8 +45,11 @@ export const findAllHppProduk = async ({ page, limit, search, idBrand }: FindAll
   }
 
   query += ` ORDER BY id DESC LIMIT ${Number(limit)} OFFSET ${Number(offset)}`;
-  
-  const [countResult] = await pool.query<RowDataPacket[]>(countQuery, queryParams);
+
+  const [countResult] = await pool.query<RowDataPacket[]>(
+    countQuery,
+    queryParams,
+  );
   const total = countResult[0].total as number;
 
   const [rows] = await pool.query<HppProdukRow[]>(query, queryParams);
@@ -45,10 +57,12 @@ export const findAllHppProduk = async ({ page, limit, search, idBrand }: FindAll
   return { data: rows, total };
 };
 
-export const findHppProdukById = async (id: number): Promise<HppProdukRow | null> => {
+export const findHppProdukById = async (
+  id: number,
+): Promise<HppProdukRow | null> => {
   const [rows] = await pool.execute<HppProdukRow[]>(
     "SELECT * FROM hpp_produk WHERE id = ? LIMIT 1",
-    [id]
+    [id],
   );
   return rows[0] ?? null;
 };
@@ -58,26 +72,39 @@ export const createHppProduk = async (
   namaProduk: string,
   hpp: string,
   variasi1?: string | null,
-  variasi2?: string | null
+  variasi2?: string | null,
 ): Promise<number> => {
   const [result] = await pool.execute<ResultSetHeader>(
     "INSERT INTO hpp_produk (id_brand, nama_produk, hpp, variasi_1, variasi_2) VALUES (?, ?, ?, ?, ?)",
-    [idBrand, namaProduk, hpp, variasi1 ?? null, variasi2 ?? null]
+    [idBrand, namaProduk, hpp, variasi1 ?? null, variasi2 ?? null],
   );
   return result.insertId;
 };
 
 export const bulkCreateHppProduk = async (
-  items: { id_brand: number; nama_produk: string; hpp: string; variasi_1?: string | null; variasi_2?: string | null }[]
+  items: {
+    id_brand: number;
+    nama_produk: string;
+    hpp: string;
+    variasi_1?: string | null;
+    variasi_2?: string | null;
+  }[],
 ): Promise<number> => {
   if (items.length === 0) return 0;
-  
+
   const placeholders = items.map(() => "(?, ?, ?, ?, ?)").join(", ");
-  const values = items.flatMap(item => [item.id_brand, item.nama_produk, item.hpp, item.variasi_1 ?? null, item.variasi_2 ?? null]);
-  
+  // const normalizeHpp =
+  const values = items.flatMap((item) => [
+    item.id_brand,
+    item.nama_produk,
+    onlyNumber(item.hpp),
+    item.variasi_1 ?? null,
+    item.variasi_2 ?? null,
+  ]);
+
   const [result] = await pool.execute<ResultSetHeader>(
     `INSERT INTO hpp_produk (id_brand, nama_produk, hpp, variasi_1, variasi_2) VALUES ${placeholders}`,
-    values
+    values,
   );
   return result.affectedRows;
 };
@@ -88,35 +115,42 @@ export const updateHppProduk = async (
   namaProduk: string,
   hpp: string,
   variasi1?: string | null,
-  variasi2?: string | null
+  variasi2?: string | null,
 ): Promise<boolean> => {
   const [result] = await pool.execute<ResultSetHeader>(
     "UPDATE hpp_produk SET id_brand = ?, nama_produk = ?, hpp = ?, variasi_1 = ?, variasi_2 = ? WHERE id = ?",
-    [idBrand, namaProduk, hpp, variasi1 ?? null, variasi2 ?? null, id]
+    [idBrand, namaProduk, hpp, variasi1 ?? null, variasi2 ?? null, id],
   );
   return result.affectedRows > 0;
 };
 
-export const deleteHppProduk = async (idBrand: number, id: number): Promise<boolean> => {
+export const deleteHppProduk = async (
+  idBrand: number,
+  id: number,
+): Promise<boolean> => {
   const [result] = await pool.execute<ResultSetHeader>(
     "DELETE FROM hpp_produk WHERE id_brand = ? AND id = ?",
-    [idBrand, id]
+    [idBrand, id],
   );
   return result.affectedRows > 0;
 };
 
-export const clearHppProdukByBrand = async (idBrand: number): Promise<number> => {
+export const clearHppProdukByBrand = async (
+  idBrand: number,
+): Promise<number> => {
   const [result] = await pool.execute<ResultSetHeader>(
     "DELETE FROM hpp_produk WHERE id_brand = ?",
-    [idBrand]
+    [idBrand],
   );
   return result.affectedRows;
 };
 
-export const findAllHppProdukByBrandId = async (idBrand: number): Promise<HppProdukRow[]> => {
+export const findAllHppProdukByBrandId = async (
+  idBrand: number,
+): Promise<HppProdukRow[]> => {
   const [rows] = await pool.execute<HppProdukRow[]>(
     "SELECT * FROM hpp_produk WHERE id_brand = ?",
-    [idBrand]
+    [idBrand],
   );
   return rows;
-}
+};

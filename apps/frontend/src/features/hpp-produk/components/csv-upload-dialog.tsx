@@ -48,6 +48,7 @@ export function CsvUploadDialog() {
 
     const id_brand = Number(selectedBrand);
 
+    console.log("asdasd")
     Papa.parse(file, {
       header: true,
       skipEmptyLines: true,
@@ -89,6 +90,7 @@ export function CsvUploadDialog() {
             }
           });
         } catch (error: any) {
+          console.log("ERROR",error.message)
           toast.error(error.message || "Gagal memproses file CSV. Pastikan format kolom sesuai.");
         }
       },

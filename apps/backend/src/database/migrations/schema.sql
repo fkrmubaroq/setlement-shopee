@@ -26,6 +26,9 @@ CREATE TABLE IF NOT EXISTS data_shopee (
   shopee_penghasilan_saya VARCHAR(255) NOT NULL,
   shopee_pesanan_saya VARCHAR(255) NOT NULL,
   shopee_biaya_iklan VARCHAR(255) NOT NULL,
+  variasi_1 VARCHAR(255) DEFAULT NULL,
+  variasi_2 VARCHAR(255) DEFAULT NULL,
+  orders_reference_column VARCHAR(255) DEFAULT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (id_brand) REFERENCES brand(id)

@@ -1,17 +1,18 @@
 import { ExcelReader } from "@/utils/excel";
 import { arrayToObject } from "@/utils/object";
+import { parsedHppToObj, parsedOrdersToObj } from "@/utils/parse";
 import type {
   CreateDataShopeeRequest,
+  DataBiayaIklanShopee,
   DataPenghasilanSaya,
   DataPesananSaya,
   DataShopee,
 } from "@setlement-shopee/types";
-import { AppError } from "../../middlewares/error-handler";
-import * as dataShopeeRepo from "./data-shopee.repository";
-import { HppProdukRow } from "../hpp-produk/hpp-produk.repository";
 import fs from "fs";
 import path from "path";
-import { parsedHppToObj, parsedOrdersToObj } from "@/utils/parse";
+import { AppError } from "../../middlewares/error-handler";
+import { HppProdukRow } from "../hpp-produk/hpp-produk.repository";
+import * as dataShopeeRepo from "./data-shopee.repository";
 
 export const getAllDataShopee = async (): Promise<DataShopee[]> => {
   return await dataShopeeRepo.findAllDataShopee();
@@ -37,6 +38,7 @@ export const createDataShopee = async (
     id_brand: req.id_brand,
     dari_tanggal: req.dari_tanggal,
     sampai_tanggal: req.sampai_tanggal,
+    orders_reference_column: req.orders_reference_column, 
     ...files,
   });
 
@@ -144,7 +146,10 @@ export const calculateOrders = (
     return true;
   });
 
-  return dataOrdersFiltered;
+  return {
+    dataOrdersFiltered,
+    dataOrders
+  };
 };
 
 type DataMatchAndOrder = {
@@ -163,16 +168,33 @@ export type ReturnDataMatchHppAndOrder = {
 export const getMatchHppAndOrder = (
   dataOrders: DataPesananSaya[],
   dataHpp: HppProdukRow[],
+  ordersReferenceColumn: string
 ) => {
   const parsedDataHppObj = parsedHppToObj(dataHpp);
-  const parsedDataOrderToObj = parsedOrdersToObj(dataOrders);
+  const parsedDataOrderToObj = parsedOrdersToObj(dataOrders, ordersReferenceColumn);
   const temp: DataMatchAndOrder[] = [];
+  const tempYgBelumMasuk: DataMatchAndOrder[] = [];
+
   let tempTotal = 0;
+  let totalProdukYgSudahMasuk = 0;
+  let totalProdukYgBelumMasuk = 0;
   Object.keys(parsedDataOrderToObj).forEach((key) => {
-    if (!parsedDataHppObj[key]) return;
+    if (!parsedDataHppObj[key]) {
+      totalProdukYgBelumMasuk += parsedDataOrderToObj[key];
+      tempYgBelumMasuk.push({
+        nama_produk: key,
+        variasi_1: "",
+        variasi_2: "",
+        terjual: parsedDataOrderToObj[key],
+        hpp: 0,
+        total: 0,
+      });
+      return;
+    }
     const [namaProduk, variasi1, variasi2] = key.split("---");
     const total = parsedDataOrderToObj[key] * parsedDataHppObj[key];
     tempTotal += total;
+    totalProdukYgSudahMasuk += parsedDataOrderToObj[key];
     temp.push({
       nama_produk: namaProduk.trim(),
       variasi_1: variasi1.trim(),
@@ -183,7 +205,32 @@ export const getMatchHppAndOrder = (
     });
   });
   return {
-    total: tempTotal,
+    total_hpp: tempTotal,
     data: temp,
+    data_yg_belum_masuk: tempYgBelumMasuk,
+    total_produk_yg_sudah_masuk: totalProdukYgSudahMasuk,
+    total_produk_yg_belum_masuk: totalProdukYgBelumMasuk,
   };
+};
+
+
+export const parsedDataTotalBiayaIklan = (fileName: string) => {
+  const START_HEADER_INDEX = 7;
+  const fromUploads = ExcelReader.fromUploads(fileName);
+  const sheet = fromUploads.sheetIndex(0);
+
+  const dataIncome = sheet.toArray(START_HEADER_INDEX) as DataBiayaIklanShopee[];
+  let totalBiayaIklan = 0;
+  dataIncome.forEach((item) => {
+    const biaya = item["Biaya"];
+    if (biaya !== undefined && biaya !== null) {
+      if (typeof biaya === "string") {
+        totalBiayaIklan += Number(biaya.replace(/[^\d.-]/g, ""));
+      } else {
+        totalBiayaIklan += Number(biaya);
+      }
+    }
+  }, 0);
+
+  return totalBiayaIklan;
 };

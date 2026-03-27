@@ -29,6 +29,7 @@ import { PlusCircle, UploadCloud } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import * as XLSX from "xlsx";
 import * as z from "zod";
 import { useCreateDataShopee } from "../hooks/use-data-shopee";
 
@@ -36,6 +37,7 @@ const formSchema = z.object({
   id_brand: z.string().min(1, "Brand harus dipilih"),
   dari_tanggal: z.string().min(1, "Tanggal mulai harus diisi"),
   sampai_tanggal: z.string().min(1, "Tanggal selesai harus diisi"),
+  orders_reference_column: z.string().min(1, "Kolom referensi pesanan harus dipilih"),
 });
 
 export function DataShopeeFormDialog() {
@@ -49,6 +51,7 @@ export function DataShopeeFormDialog() {
     shopee_pesanan_saya: null,
     shopee_biaya_iklan: null,
   });
+  const [pesananSayaColumns, setPesananSayaColumns] = useState<string[]>([]);
 
   const { data: brands } = useGetBrands();
   const createMutation = useCreateDataShopee();
@@ -59,12 +62,40 @@ export function DataShopeeFormDialog() {
       id_brand: "",
       dari_tanggal: "",
       sampai_tanggal: "",
+      orders_reference_column: "",
     },
   });
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, field: keyof typeof files) => {
     if (e.target.files && e.target.files[0]) {
-      setFiles((prev) => ({ ...prev, [field]: e.target.files![0] }));
+      const file = e.target.files[0];
+      setFiles((prev) => ({ ...prev, [field]: file }));
+
+      if (field === "shopee_pesanan_saya") {
+        try {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            const data = new Uint8Array(e.target?.result as ArrayBuffer);
+            const workbook = XLSX.read(data, { type: "array" });
+            const sheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[sheetName];
+            const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+            if (jsonData.length > 0) {
+              const headers = jsonData[0] as string[];
+              setPesananSayaColumns(headers.filter(Boolean));
+              
+              if (headers.includes("Nama Produk")) {
+                form.setValue("orders_reference_column", "Nama Produk");
+              } else if (headers.includes("Nomor Referensi SKU")) {
+                form.setValue("orders_reference_column", "Nomor Referensi SKU");
+              }
+            }
+          };
+          reader.readAsArrayBuffer(file);
+        } catch (error) {
+          toast.error("Gagal membaca kolom dari file Pesanan Saya");
+        }
+      }
     }
   };
 
@@ -78,6 +109,7 @@ export function DataShopeeFormDialog() {
     formData.append("id_brand", values.id_brand);
     formData.append("dari_tanggal", values.dari_tanggal);
     formData.append("sampai_tanggal", values.sampai_tanggal);
+    formData.append("orders_reference_column", values.orders_reference_column);
     formData.append("shopee_penghasilan_saya", files.shopee_penghasilan_saya);
     formData.append("shopee_pesanan_saya", files.shopee_pesanan_saya);
     formData.append("shopee_biaya_iklan", files.shopee_biaya_iklan);
@@ -92,6 +124,7 @@ export function DataShopeeFormDialog() {
           shopee_pesanan_saya: null,
           shopee_biaya_iklan: null,
         });
+        setPesananSayaColumns([]);
       },
       onError: (err: any) => {
         toast.error(err.message || "Gagal mengunggah data Shopee");
@@ -202,8 +235,35 @@ export function DataShopeeFormDialog() {
                     <p className="text-[10px] text-green-600 truncate">{files.shopee_pesanan_saya.name}</p>
                   )}
                 </div>
+                
+                {pesananSayaColumns.length > 0 && (
+                  <FormField
+                    control={form.control}
+                    name="orders_reference_column"
+                    render={({ field }) => (
+                      <FormItem className="bg-orange-50/50 p-3 rounded-md border border-orange-100">
+                        <FormLabel>Kolom Referensi Pesanan (Dari File Excel)</FormLabel>
+                        <Select onValueChange={field.onChange} value={field.value}>
+                          <FormControl>
+                            <SelectTrigger className="bg-white">
+                              <SelectValue placeholder="Pilih Kolom..." />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {pesananSayaColumns.map((col, idx) => (
+                              <SelectItem key={idx} value={col}>
+                                {col}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
 
-                <div className="space-y-2">
+                <div className="space-y-2 border-t pt-4 mt-4">
                   <FormLabel className="flex items-center gap-2">
                     <UploadCloud className="h-4 w-4 text-red-500" /> Shopee Biaya Iklan
                   </FormLabel>
@@ -219,7 +279,7 @@ export function DataShopeeFormDialog() {
                 </div>
               </div>
 
-              <div className="flex justify-end pt-4">
+              <div className="flex justify-end pt-4 border-t mt-4">
                 <Button type="submit" disabled={isPending} className="w-full bg-blue-600 hover:bg-blue-700">
                   {isPending ? "Mengunggah..." : "Simpan Data"}
                 </Button>

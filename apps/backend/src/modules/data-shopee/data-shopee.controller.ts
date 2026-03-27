@@ -2,6 +2,7 @@ import { ExcelReader } from "@/utils/excel";
 import type {
   ApiResponse,
   CreateDataShopeeRequest,
+  DataDetailShopee,
   DataShopee,
 } from "@setlement-shopee/types";
 import type { NextFunction, Request, Response } from "express";
@@ -25,7 +26,7 @@ export const getAllDataShopee = async (
 
 export const getDataShopeeById = async (
   req: Request<{ id: string }>,
-  res: Response,
+  res: Response<DataDetailShopee>,
   next: NextFunction,
 ) => {
   try {
@@ -33,25 +34,43 @@ export const getDataShopeeById = async (
     const dataShopee = await dataShopeeService.getDataShopeeById(id);
 
     // Example usage of ExcelReader with chaining
-    const { data: dataPenghasilanSaya, total } =
+    const { data: dataPenghasilanSaya, total:totalYgDilepas } =
       dataShopeeService.parsedDataPenghasilanSaya(
         dataShopee.shopee_penghasilan_saya,
       );
 
-    const dataOrdersFiltered = dataShopeeService.calculateOrders(
+    const {dataOrdersFiltered, dataOrders} = dataShopeeService.calculateOrders(
       dataShopee.shopee_pesanan_saya,
       dataPenghasilanSaya,
     );
+
+    const totalBiayaIklan = dataShopeeService.parsedDataTotalBiayaIklan(dataShopee.shopee_biaya_iklan);
+    const ppnBiayaIklan = totalBiayaIklan * 0.11;
     const dataHpp = await getHppProdukByBrandId(dataShopee.id_brand);
 
     const dataMatchHppAndOrders = dataShopeeService.getMatchHppAndOrder(
       dataOrdersFiltered,
       dataHpp,
+      dataShopee.orders_reference_column || "Nama Produk"
     );
-
-    // const shopeePesananSaya = await dataShopeeService.getShopeePesananSayaById(id);
-    // const shopeeBiayaIklan = await dataShopeeService.getShopeeBiayaIklanById(id);
-    res.status(200).json(dataMatchHppAndOrders).end();
+    const netProfit = totalYgDilepas - (dataMatchHppAndOrders.total_hpp + totalBiayaIklan + ppnBiayaIklan);
+    const sharing = {
+      brand: netProfit * 0.7,
+      platform: netProfit * 0.3,
+    }
+    const result = {
+      total_hpp: dataMatchHppAndOrders.total_hpp,
+      total_yg_dilepas: totalYgDilepas,
+      total_biaya_iklan: totalBiayaIklan,
+      ppn_biaya_iklan: ppnBiayaIklan,
+      sharing,
+      net_profit: netProfit,
+      total_produk_yg_sudah_masuk: dataMatchHppAndOrders.total_produk_yg_sudah_masuk,
+      total_produk_yg_belum_masuk: dataMatchHppAndOrders.total_produk_yg_belum_masuk,
+      detail: dataMatchHppAndOrders.data,
+      detail_yg_belum_masuk: dataMatchHppAndOrders.data_yg_belum_masuk,
+    }
+    res.status(200).json(result).end();
   } catch (error) {
     next(error);
   }
@@ -77,6 +96,7 @@ export const createDataShopee = async (
       id_brand: parseInt(req.body.id_brand, 10),
       dari_tanggal: req.body.dari_tanggal,
       sampai_tanggal: req.body.sampai_tanggal,
+      orders_reference_column: req.body.orders_reference_column,
     };
 
     const filePaths = {
@@ -132,6 +152,7 @@ export const updateDataShopee = async (
       id_brand: req.body.id_brand ? parseInt(req.body.id_brand, 10) : undefined,
       dari_tanggal: req.body.dari_tanggal || undefined,
       sampai_tanggal: req.body.sampai_tanggal || undefined,
+      orders_reference_column: req.body.orders_reference_column || undefined,
     };
 
     const newFiles: any = {};

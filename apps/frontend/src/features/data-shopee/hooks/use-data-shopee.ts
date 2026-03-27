@@ -20,7 +20,7 @@ export const useGetDataShopeeById = (id: number) => {
     queryKey: [...dataShopeeKeys.all, id],
     queryFn: async () => {
       const response = await dataShopeeApi.getDataShopeeById(id);
-      return response.data;
+      return response;
     },
     enabled: !!id,
   });

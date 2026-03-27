@@ -18,6 +18,15 @@ export class ExcelReader {
     return new ExcelReader(fullPath);
   }
 
+  sheetIndex(sheetIndex: number = 0) {
+    const targetSheet = this.workbook.SheetNames[sheetIndex];
+    if (!targetSheet) {
+      throw new Error(`Sheet "${sheetIndex}" not found`);
+    }
+    this.workSheet = this.workbook.Sheets[targetSheet];
+    return this;
+  }
+  
   sheet(sheetName: string = 'Sheet1') {
     const targetSheet = this.workbook.SheetNames.find(name =>
       name.toLowerCase().includes(sheetName.toLowerCase())

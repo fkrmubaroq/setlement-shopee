@@ -8,6 +8,7 @@ export const DataShopeeSchema = z.object({
   shopee_penghasilan_saya: z.string().min(1),
   shopee_pesanan_saya: z.string().min(1),
   shopee_biaya_iklan: z.string().min(1),
+  orders_reference_column: z.string().optional().nullable(),
   created_at: z.date().optional(),
   updated_at: z.date().optional(),
 });
@@ -16,6 +17,7 @@ export const CreateDataShopeeRequestSchema = z.object({
   id_brand: z.number().int().positive("ID Brand harus diisi"),
   dari_tanggal: z.string().min(1, "Dari tanggal harus diisi"),
   sampai_tanggal: z.string().min(1, "Sampai tanggal harus diisi"),
+  orders_reference_column: z.string().min(1, "Kolom referensi pesanan harus diisi"),
   // Files will be handled via FormData in multipart request
 });
 
@@ -118,4 +120,63 @@ export type DataPesananSaya = {
   "Kota/Kabupaten": string
   Provinsi: string
   "Waktu Pesanan Selesai": string 
+}
+
+export type DataDetailShopeeItem = {
+  nama_produk: string
+  variasi_1: string
+  variasi_2: string
+  terjual: number
+  hpp: number
+  total: number
+}
+
+export type DataDetailShopee = {
+  total_hpp: number
+  total_yg_dilepas: number
+  total_biaya_iklan: number
+  ppn_biaya_iklan: number
+  sharing: {
+    brand: number
+    platform: number
+  }
+  net_profit: number
+  total_produk_yg_sudah_masuk: number
+  total_produk_yg_belum_masuk: number
+  detail: DataDetailShopeeItem[]
+  detail_yg_belum_masuk: DataDetailShopeeItem[]  
+}
+
+export type DataBiayaIklanShopee = {
+  Urutan: string
+  "Nama Iklan": string
+  Status: string
+  "Jenis Iklan": string
+  "Kode Produk": string
+  "Tampilan Iklan": string
+  "Mode Bidding": string
+  "Penempatan Iklan": string
+  "Tanggal Mulai": string
+  "Tanggal Selesai": string
+  Dilihat: string
+  "Jumlah Klik": string
+  "Persentase Klik": string
+  Konversi: string
+  "Konversi Langsung": string
+  "Tingkat konversi": string
+  "Tingkat Konversi Langsung": string
+  "Biaya per Konversi": string
+  "Biaya per Konversi Langsung": string
+  "Produk Terjual": string
+  "Terjual Langsung": string
+  "Omzet Penjualan": string
+  "Penjualan Langsung (GMV Langsung)": string
+  Biaya: string
+  "Efektifitas Iklan": string
+  "Efektivitas Langsung": string
+  "Persentase Biaya Iklan terhadap Penjualan dari Iklan (ACOS)": string
+  "Persentase Biaya Iklan terhadap Penjualan dari Iklan Langsung (ACOS Langsung)": string
+  "Jumlah Produk Dilihat": string
+  "Jumlah Klik Produk": string
+  "Persentase Klik Produk": string
 }

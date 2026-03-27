@@ -17,6 +17,7 @@ const queryClient = new QueryClient({
 });
 
 // Import the generated route tree
+import { Toaster } from "sonner";
 import { routeTree } from "./routeTree.gen";
 
 // Create a new router instance
@@ -32,6 +33,7 @@ declare module "@tanstack/react-router" {
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
+      <Toaster />
       <TooltipProvider>
         <RouterProvider router={router} />
       </TooltipProvider>

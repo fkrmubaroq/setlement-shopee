@@ -1,12 +1,12 @@
 import { axiosInstance } from "@/lib/axios";
-import type { ApiResponse, DataShopee } from "@setlement-shopee/types";
+import type { ApiResponse, DataDetailShopee, DataShopee } from "@setlement-shopee/types";
 
 export const dataShopeeApi = {
   getAllDataShopee: async (): Promise<ApiResponse<DataShopee[]>> => {
     return await axiosInstance.get("/data-shopee");
   },
 
-  getDataShopeeById: async (id: number): Promise<ApiResponse<DataShopee>> => {
+  getDataShopeeById: async (id: number): Promise<DataDetailShopee> => {
     return await axiosInstance.get(`/data-shopee/${id}`);
   },
 

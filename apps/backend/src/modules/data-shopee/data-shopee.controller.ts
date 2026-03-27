@@ -53,6 +53,10 @@ export const getDataShopeeById = async (
       dataHpp,
       dataShopee.orders_reference_column || "Nama Produk"
     );
+    const rincianPesanan = dataShopeeService.mergeOrdersWithPenghasilan(
+      dataOrdersFiltered,
+      dataPenghasilanSaya,
+    );
     const netProfit = totalYgDilepas - (dataMatchHppAndOrders.total_hpp + totalBiayaIklan + ppnBiayaIklan);
     const sharing = {
       brand: netProfit * 0.7,
@@ -69,6 +73,7 @@ export const getDataShopeeById = async (
       total_produk_yg_belum_masuk: dataMatchHppAndOrders.total_produk_yg_belum_masuk,
       detail: dataMatchHppAndOrders.data,
       detail_yg_belum_masuk: dataMatchHppAndOrders.data_yg_belum_masuk,
+      rincian_pesanan: rincianPesanan,
     }
     res.status(200).json(result).end();
   } catch (error) {

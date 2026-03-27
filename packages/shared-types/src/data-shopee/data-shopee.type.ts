@@ -131,6 +131,48 @@ export type DataDetailShopeeItem = {
   total: number
 }
 
+/** Satu baris pesanan: gabungan DataPesananSaya + rincian keuangan DataPenghasilanSaya (join No. Pesanan). */
+export type DataRincianPesanan = {
+  // Dari DataPesananSaya
+  no_pesanan: string
+  username: string
+  nama_produk: string
+  nama_variasi: string
+  jumlah: string
+  harga_awal: string
+  harga_setelah_diskon: string
+  waktu_pesanan_dibuat: string
+  waktu_pembayaran: string
+  metode_pembayaran: string
+  // Dari DataPenghasilanSaya (subset yang diminta)
+  harga_asli_produk: string
+  total_diskon_produk: string
+  jumlah_pengembalian_dana: string
+  diskon_produk_dari_shopee: string
+  voucher_sponsor_penjual: string
+  voucher_cofund_penjual: string
+  cashback_koin_penjual: string
+  cashback_koin_cofund_penjual: string
+  ongkir_dibayar_pembeli: string
+  diskon_ongkir_jasa_kirim: string
+  gratis_ongkir_shopee: string
+  ongkir_diteruskan_shopee: string
+  ongkos_kirim_pengembalian: string
+  kembali_biaya_pengiriman: string
+  pengembalian_biaya_kirim: string
+  biaya_komisi_ams: string
+  biaya_administrasi: string
+  biaya_layanan: string
+  biaya_proses_pesanan: string
+  premi: string
+  biaya_program_hemat_ongkir: string
+  biaya_transaksi: string
+  biaya_kampanye: string
+  bea_masuk_ppn_pph: string
+  biaya_isi_saldo_otomatis: string
+  total_penghasilan: string
+}
+
 export type DataDetailShopee = {
   total_hpp: number
   total_yg_dilepas: number
@@ -144,7 +186,8 @@ export type DataDetailShopee = {
   total_produk_yg_sudah_masuk: number
   total_produk_yg_belum_masuk: number
   detail: DataDetailShopeeItem[]
-  detail_yg_belum_masuk: DataDetailShopeeItem[]  
+  detail_yg_belum_masuk: DataDetailShopeeItem[]
+  rincian_pesanan: DataRincianPesanan[]
 }
 
 export type DataBiayaIklanShopee = {

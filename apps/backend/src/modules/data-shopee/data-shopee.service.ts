@@ -6,6 +6,7 @@ import type {
   DataBiayaIklanShopee,
   DataPenghasilanSaya,
   DataPesananSaya,
+  DataRincianPesanan,
   DataShopee,
 } from "@setlement-shopee/types";
 import fs from "fs";
@@ -234,3 +235,92 @@ export const parsedDataTotalBiayaIklan = (fileName: string) => {
 
   return totalBiayaIklan;
 };
+
+function cellString(v: unknown): string {
+  if (v === undefined || v === null) return "";
+  return String(v);
+}
+
+/** Gabungkan baris Pesanan Saya dengan rincian Penghasilan Saya per `No. Pesanan`. */
+export function mergeOrdersWithPenghasilan(
+  dataOrdersFiltered: DataPesananSaya[],
+  dataPenghasilanSaya: DataPenghasilanSaya[],
+): DataRincianPesanan[] {
+  const penghasilanByOrderNo = new Map<string, DataPenghasilanSaya>();
+  for (const row of dataPenghasilanSaya) {
+    const key = cellString(row["No. Pesanan"]);
+    if (key) penghasilanByOrderNo.set(key, row);
+  }
+
+  return dataOrdersFiltered.map((order) => {
+    const no = cellString(order["No. Pesanan"]);
+    const p = penghasilanByOrderNo.get(no);
+
+    return {
+      no_pesanan: no,
+      username: cellString(order["Username (Pembeli)"]),
+      nama_produk: cellString(order["Nama Produk"]),
+      nama_variasi: cellString(order["Nama Variasi"]),
+      jumlah: cellString(order.Jumlah),
+      harga_awal: cellString(order["Harga Awal"]),
+      harga_setelah_diskon: cellString(order["Harga Setelah Diskon"]),
+      waktu_pesanan_dibuat: cellString(order["Waktu Pesanan Dibuat"]),
+      waktu_pembayaran: cellString(order["Waktu Pembayaran Dilakukan"]),
+      metode_pembayaran: cellString(order["Metode Pembayaran"]),
+      harga_asli_produk: p ? cellString(p["Harga Asli Produk"]) : "",
+      total_diskon_produk: p ? cellString(p["Total Diskon Produk"]) : "",
+      jumlah_pengembalian_dana: p
+        ? cellString(p["Jumlah Pengembalian Dana ke Pembeli"])
+        : "",
+      diskon_produk_dari_shopee: p
+        ? cellString(p["Diskon Produk dari Shopee"])
+        : "",
+      voucher_sponsor_penjual: p
+        ? cellString(p["Voucher disponsor oleh Penjual"])
+        : "",
+      voucher_cofund_penjual: p
+        ? cellString(p["Voucher co-fund disponsor oleh Penjual"])
+        : "",
+      cashback_koin_penjual: p
+        ? cellString(p["Cashback Koin disponsori Penjual"])
+        : "",
+      cashback_koin_cofund_penjual: p
+        ? cellString(p["Cashback Koin Co-fund disponsori Penjual"])
+        : "",
+      ongkir_dibayar_pembeli: p
+        ? cellString(p["Ongkir Dibayar Pembeli"])
+        : "",
+      diskon_ongkir_jasa_kirim: p
+        ? cellString(p["Diskon Ongkir Ditanggung Jasa Kirim"])
+        : "",
+      gratis_ongkir_shopee: p ? cellString(p["Gratis Ongkir dari Shopee"]) : "",
+      ongkir_diteruskan_shopee: p
+        ? cellString(p["Ongkir yang Diteruskan oleh Shopee ke Jasa Kirim"])
+        : "",
+      ongkos_kirim_pengembalian: p
+        ? cellString(p["Ongkos Kirim Pengembalian Barang"])
+        : "",
+      kembali_biaya_pengiriman: p
+        ? cellString(p["Kembali ke Biaya Pengiriman Pengirim"])
+        : "",
+      pengembalian_biaya_kirim: p
+        ? cellString(p["Pengembalian Biaya Kirim"])
+        : "",
+      biaya_komisi_ams: p ? cellString(p["Biaya Komisi AMS"]) : "",
+      biaya_administrasi: p ? cellString(p["Biaya Administrasi"]) : "",
+      biaya_layanan: p ? cellString(p["Biaya Layanan"]) : "",
+      biaya_proses_pesanan: p ? cellString(p["Biaya Proses Pesanan"]) : "",
+      premi: p ? cellString(p.Premi) : "",
+      biaya_program_hemat_ongkir: p
+        ? cellString(p["Biaya Program Hemat Biaya Kirim"])
+        : "",
+      biaya_transaksi: p ? cellString(p["Biaya Transaksi"]) : "",
+      biaya_kampanye: p ? cellString(p["Biaya Kampanye"]) : "",
+      bea_masuk_ppn_pph: p ? cellString(p["Bea Masuk, PPN & PPh"]) : "",
+      biaya_isi_saldo_otomatis: p
+        ? cellString(p["Biaya Isi Saldo Otomatis (dari Penghasilan)"])
+        : "",
+      total_penghasilan: p ? cellString(p["Total Penghasilan"]) : "",
+    };
+  });
+}

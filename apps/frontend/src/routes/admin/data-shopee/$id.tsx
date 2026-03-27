@@ -1,10 +1,13 @@
+/* eslint-disable react-refresh/only-export-components -- TanStack Router file: exports Route + co-located helpers */
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { PENGHASILAN_DETAIL_ROWS } from '@/features/data-shopee/constants/penghasilan-detail-rows';
 import { useGetDataShopeeById } from '@/features/data-shopee/hooks/use-data-shopee';
 import { createFileRoute, Link } from '@tanstack/react-router';
-import { AlertCircle, ArrowLeft, CheckCircle2 } from 'lucide-react';
+import { AlertCircle, ArrowLeft, CheckCircle2, ChevronDown, ChevronRight, ListOrdered } from 'lucide-react';
+import { Fragment, useCallback, useState } from 'react';
 
 export const Route = createFileRoute('/admin/data-shopee/$id')({
   component: DataShopeeDetailRoute,
@@ -17,6 +20,18 @@ function formatRupiah(number: number) {
 function DataShopeeDetailRoute() {
   const { id } = Route.useParams();
   const { data, isLoading, isError } = useGetDataShopeeById(Number(id));
+  const [expandedRincianKeys, setExpandedRincianKeys] = useState<Set<string>>(
+    () => new Set(),
+  );
+
+  const toggleRincianRow = useCallback((key: string) => {
+    setExpandedRincianKeys((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  }, []);
 
   if (isLoading) {
     return <div className="p-6 text-gray-500">Memuat data rekonsiliasi...</div>;
@@ -25,6 +40,8 @@ function DataShopeeDetailRoute() {
   if (isError || !data) {
     return <div className="p-6 text-red-500">Gagal mengambil detail Data Shopee.</div>;
   }
+
+  const rincianPesanan = data.rincian_pesanan ?? [];
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
@@ -124,12 +141,15 @@ function DataShopeeDetailRoute() {
       </div>
 
       <Tabs defaultValue="cocok" className="w-full">
-        <TabsList className="mb-4">
+        <TabsList className="mb-4 flex flex-wrap gap-1 h-auto">
           <TabsTrigger value="cocok" className="data-[state=active]:bg-emerald-50 data-[state=active]:text-emerald-700">
             <CheckCircle2 className="h-4 w-4 mr-2" /> Produk Cocok ({data.detail.length})
           </TabsTrigger>
           <TabsTrigger value="belum-cocok" className="data-[state=active]:bg-red-50 data-[state=active]:text-red-700">
             <AlertCircle className="h-4 w-4 mr-2" /> Belum Cocok ({data.detail_yg_belum_masuk.length})
+          </TabsTrigger>
+          <TabsTrigger value="rincian-pesanan" className="data-[state=active]:bg-sky-50 data-[state=active]:text-sky-800 dark:data-[state=active]:bg-sky-950/40 dark:data-[state=active]:text-sky-200">
+            <ListOrdered className="h-4 w-4 mr-2" /> Rincian Pesanan ({rincianPesanan.length})
           </TabsTrigger>
         </TabsList>
 
@@ -231,6 +251,142 @@ function DataShopeeDetailRoute() {
                       </TableRow>
                     </TableFooter>
                   )}
+                </Table>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="rincian-pesanan">
+          <Card className="shadow-sm border-sky-100 dark:border-sky-900/50">
+            <CardHeader className="bg-sky-50/50 dark:bg-sky-950/20 border-b">
+              <CardTitle className="text-sky-800 dark:text-sky-300 flex items-center gap-2 text-lg">
+                <ListOrdered className="h-5 w-5" /> Rincian per baris pesanan
+              </CardTitle>
+              <CardDescription className="text-sky-700/80 dark:text-sky-400/80">
+                Data gabungan Pesanan Saya + Penghasilan Saya (per <span className="font-medium">No. Pesanan</span>).
+                Klik panah untuk rincian keuangan dari laporan Penghasilan.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="p-0">
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader className="bg-gray-50/50 dark:bg-gray-900/50">
+                    <TableRow>
+                      <TableHead className="w-10" />
+                      <TableHead className="min-w-[140px]">No. Pesanan</TableHead>
+                      <TableHead className="min-w-[100px]">Username</TableHead>
+                      <TableHead className="min-w-[160px]">Nama Produk</TableHead>
+                      <TableHead className="min-w-[100px]">Variasi</TableHead>
+                      <TableHead className="text-center w-[72px]">Jumlah</TableHead>
+                      <TableHead className="min-w-[100px]">Harga Awal</TableHead>
+                      <TableHead className="min-w-[110px]">Harga Setelah Diskon</TableHead>
+                      <TableHead className="min-w-[110px]">Total</TableHead>
+                      <TableHead className="min-w-[120px]">Metode Pembayaran</TableHead>
+                      <TableHead className="min-w-[140px]">Waktu Pesanan</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {rincianPesanan.length === 0 ? (
+                      <TableRow>
+                        <TableCell colSpan={10} className="text-center h-24 text-gray-500">
+                          Tidak ada baris pesanan yang cocok dengan filter Penghasilan.
+                        </TableCell>
+                      </TableRow>
+                    ) : (
+                      rincianPesanan.map((row, index) => {
+                        const rowKey = `${row.no_pesanan}-${index}`;
+                        const isOpen = expandedRincianKeys.has(rowKey);
+                        return (
+                          <Fragment key={rowKey}>
+                            <TableRow className="hover:bg-gray-50/50 dark:hover:bg-gray-800/50">
+                              <TableCell className="p-1">
+                                <Button
+                                  type="button"
+                                  variant="ghost"
+                                  size="icon"
+                                  className="h-8 w-8 shrink-0"
+                                  onClick={() => toggleRincianRow(rowKey)}
+                                  aria-expanded={isOpen}
+                                  aria-label={isOpen ? 'Sembunyikan rincian' : 'Tampilkan rincian penghasilan'}
+                                >
+                                  {isOpen ? (
+                                    <ChevronDown className="h-4 w-4" />
+                                  ) : (
+                                    <ChevronRight className="h-4 w-4" />
+                                  )}
+                                </Button>
+                              </TableCell>
+                              <TableCell className="font-mono text-xs align-middle">
+                                {row.no_pesanan || '—'}
+                              </TableCell>
+                              <TableCell className="text-sm align-middle">
+                                {row.username || '—'}
+                              </TableCell>
+                              <TableCell className="font-medium text-sm align-middle max-w-[220px] truncate">
+                                {row.nama_produk || '—'}
+                              </TableCell>
+                              <TableCell className="text-sm text-muted-foreground align-middle">
+                                {row.nama_variasi || '—'}
+                              </TableCell>
+                              <TableCell className="text-center text-sm font-medium align-middle">
+                                {row.jumlah || '—'}
+                              </TableCell>
+                              <TableCell className="text-sm align-middle whitespace-nowrap">
+                                {row.harga_awal || '—'}
+                              </TableCell>
+                              <TableCell className="text-sm align-middle whitespace-nowrap">
+                                {row.harga_setelah_diskon || '—'}
+                              </TableCell>
+                              <TableCell className="text-sm align-middle whitespace-nowrap">
+                                {row.harga_setelah_diskon * Number(row.jumlah) || '—'}
+                              </TableCell>
+                              <TableCell className="text-sm align-middle">
+                                {row.metode_pembayaran || '—'}
+                              </TableCell>
+                              <TableCell className="text-xs text-muted-foreground align-middle whitespace-nowrap">
+                                {row.waktu_pesanan_dibuat || '—'}
+                              </TableCell>
+                            </TableRow>
+                            {isOpen ? (
+                              <TableRow className="bg-muted/40 hover:bg-muted/40 border-l-4 border-l-sky-400">
+                                <TableCell colSpan={10} className="p-0">
+                                  <div className="p-4 space-y-4 border-t border-border/60">
+                                    <div className="text-sm">
+                                      <span className="font-medium text-foreground">
+                                        Waktu pembayaran:{' '}
+                                      </span>
+                                      <span className="text-muted-foreground">
+                                        {row.waktu_pembayaran || '—'}
+                                      </span>
+                                    </div>
+                                    <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                                      Rincian Penghasilan (Income)
+                                    </p>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-0 text-sm">
+                                      {PENGHASILAN_DETAIL_ROWS.map(({ key, label }) => (
+                                        <div
+                                          key={key}
+                                          className="flex flex-col sm:flex-row sm:gap-3 sm:items-baseline border-b border-border/40 py-2"
+                                        >
+                                          <span className="text-muted-foreground shrink-0 sm:w-[min(48%,260px)]">
+                                            {label}
+                                          </span>
+                                          <span className="font-medium sm:text-right sm:flex-1 break-all">
+                                            {(row[key] as string) || '—'}
+                                          </span>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                </TableCell>
+                              </TableRow>
+                            ) : null}
+                          </Fragment>
+                        );
+                      })
+                    )}
+                  </TableBody>
                 </Table>
               </div>
             </CardContent>

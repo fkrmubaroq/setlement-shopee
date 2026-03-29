@@ -29,12 +29,21 @@ import { ClearHppProdukDialog } from "./clear-hpp-produk-dialog";
 import { CsvUploadDialog } from "./csv-upload-dialog";
 import { HppProdukFormSheet } from "./hpp-produk-form-dialog";
 
+import { useAuthStore } from "@/store/auth.store";
+
 export function HppProdukTable() {
+  const { user } = useAuthStore();
+  const isSuperAdmin = user?.role === "super_admin";
+  const isUserBrand = user?.role === "user_brand";
+
   const [page, setPage] = useState(1);
   const [limit] = useState(10);
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
-  const [idBrand, setIdBrand] = useState<number | undefined>(undefined);
+  // Determine initial brand if user_brand
+  const [idBrand, setIdBrand] = useState<number | undefined>(
+    isUserBrand ? user?.id_brand || undefined : undefined,
+  );
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -108,11 +117,13 @@ export function HppProdukTable() {
             Kelola master data harga pokok penjualan secara massal.
           </p>
         </div>
-        <div className="flex flex-wrap gap-2 items-center">
-          <ClearHppProdukDialog />
-          <CsvUploadDialog />
-          <HppProdukFormSheet />
-        </div>
+        {isSuperAdmin && (
+          <div className="flex flex-wrap gap-2 items-center">
+            <ClearHppProdukDialog />
+            <CsvUploadDialog />
+            <HppProdukFormSheet />
+          </div>
+        )}
       </CardHeader>
 
       <div className="p-4 flex flex-col sm:flex-row gap-4 justify-between items-center bg-gray-50/50 dark:bg-gray-900/20">
@@ -126,24 +137,26 @@ export function HppProdukTable() {
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
-        <div className="w-full sm:w-56">
-          <Select
-            value={idBrand?.toString() || "all"}
-            onValueChange={handleBrandChange}
-          >
-            <SelectTrigger className="bg-white dark:bg-gray-900">
-              <SelectValue placeholder="Semua Brand" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Semua Brand</SelectItem>
-              {brands?.map((b) => (
-                <SelectItem key={b.id} value={b.id.toString()}>
-                  {b.nama_brand}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+        {!isUserBrand && (
+          <div className="w-full sm:w-56">
+            <Select
+              value={idBrand?.toString() || "all"}
+              onValueChange={handleBrandChange}
+            >
+              <SelectTrigger className="bg-white dark:bg-gray-900">
+                <SelectValue placeholder="Semua Brand" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Semua Brand</SelectItem>
+                {brands?.map((b) => (
+                  <SelectItem key={b.id} value={b.id.toString()}>
+                    {b.nama_brand}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        )}
       </div>
 
       <CardContent className="p-0 border-t">
@@ -236,15 +249,21 @@ export function HppProdukTable() {
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end items-center gap-1">
-                        <HppProdukFormSheet initialData={item} />
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => handleDelete(item.id_brand, item.id)}
-                          className="h-8 w-8 text-red-500 hover:text-red-700 hover:bg-red-100"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
+                        {isSuperAdmin && (
+                          <>
+                            <HppProdukFormSheet initialData={item} />
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() =>
+                                handleDelete(item.id_brand, item.id)
+                              }
+                              className="h-8 w-8 text-red-500 hover:text-red-700 hover:bg-red-100"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </>
+                        )}
                       </div>
                     </TableCell>
                   </TableRow>

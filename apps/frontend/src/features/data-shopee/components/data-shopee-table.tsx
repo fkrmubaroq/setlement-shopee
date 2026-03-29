@@ -22,7 +22,10 @@ import {
 import { DataShopeeEditDialog } from "./data-shopee-edit-dialog";
 import { DataShopeeFormDialog } from "./data-shopee-form-dialog";
 
+import { useAuthStore } from "@/store/auth.store";
+
 export function DataShopeeTable() {
+  const { user } = useAuthStore();
   const navigate = useNavigate();
   const { data: dataShopeeList, isLoading, isError } = useGetDataShopeeList();
   const { data: brands, isLoading: loadingBrands } = useGetBrands();
@@ -62,6 +65,8 @@ export function DataShopeeTable() {
     import.meta.env.VITE_API_URL || "http://localhost:5000/api"
   ).replace("/api", "/uploads");
 
+  const isSuperAdmin = user?.role === "super_admin";
+
   return (
     <>
       <Card className="border-none shadow-md">
@@ -74,7 +79,7 @@ export function DataShopeeTable() {
               Daftar unggahan data Excel dari Shopee Seller Centre.
             </p>
           </div>
-          <DataShopeeFormDialog />
+          {isSuperAdmin && <DataShopeeFormDialog />}
         </CardHeader>
         <CardContent className="p-0">
           <div className="overflow-x-auto">
@@ -190,25 +195,29 @@ export function DataShopeeTable() {
                       </TableCell>
                       <TableCell className="text-center">
                         <div className="flex items-center justify-center gap-1">
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="h-8 w-8 p-0"
-                            onClick={() => setEditItem(item)}
-                            title="Edit"
-                          >
-                            <Pencil className="h-3.5 w-3.5" />
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="h-8 w-8 p-0 text-red-500 hover:text-red-600 hover:border-red-300"
-                            onClick={() => handleDelete(item.id!)}
-                            disabled={deleteMutation.isPending}
-                            title="Hapus"
-                          >
-                            <Trash2 className="h-3.5 w-3.5" />
-                          </Button>
+                          {isSuperAdmin && (
+                            <>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="h-8 w-8 p-0"
+                                onClick={() => setEditItem(item)}
+                                title="Edit"
+                              >
+                                <Pencil className="h-3.5 w-3.5" />
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="h-8 w-8 p-0 text-red-500 hover:text-red-600 hover:border-red-300"
+                                onClick={() => handleDelete(item.id!)}
+                                disabled={deleteMutation.isPending}
+                                title="Hapus"
+                              >
+                                <Trash2 className="h-3.5 w-3.5" />
+                              </Button>
+                            </>
+                          )}
                           <Button
                             size="sm"
                             onClick={() => {

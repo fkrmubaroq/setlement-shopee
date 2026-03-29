@@ -4,11 +4,14 @@ CREATE TABLE IF NOT EXISTS users (
   name VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL UNIQUE,
   password VARCHAR(255) NOT NULL,
+  role ENUM('super_admin', 'admin', 'user_brand') DEFAULT 'user_brand',
+  id_brand INT UNSIGNED DEFAULT NULL,
   avatar VARCHAR(500) DEFAULT NULL,
   phone VARCHAR(20) DEFAULT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  INDEX idx_email (email)
+  INDEX idx_email (email),
+  FOREIGN KEY (id_brand) REFERENCES brand(id)
 );
 
 CREATE TABLE IF NOT EXISTS brand (

@@ -6,22 +6,26 @@ type UserRow = RowDataPacket & {
   name: string;
   email: string;
   password: string;
+  role: "super_admin" | "admin" | "user_brand";
+  id_brand: number | null;
   created_at: string;
   updated_at: string;
 };
 
-export const findUserByEmail = async (email: string): Promise<UserRow | null> => {
+export const findUserByEmail = async (
+  email: string,
+): Promise<UserRow | null> => {
   const [rows] = await pool.execute<UserRow[]>(
     "SELECT * FROM users WHERE email = ? LIMIT 1",
-    [email]
+    [email],
   );
   return rows[0] ?? null;
 };
 
 export const findUserById = async (id: number): Promise<UserRow | null> => {
   const [rows] = await pool.execute<UserRow[]>(
-    "SELECT id, name, email, created_at, updated_at FROM users WHERE id = ? LIMIT 1",
-    [id]
+    "SELECT id, name, email, role, id_brand, created_at, updated_at FROM users WHERE id = ? LIMIT 1",
+    [id],
   );
   return rows[0] ?? null;
 };
@@ -29,11 +33,11 @@ export const findUserById = async (id: number): Promise<UserRow | null> => {
 export const createUser = async (
   name: string,
   email: string,
-  hashedPassword: string
+  hashedPassword: string,
 ): Promise<number> => {
   const [result] = await pool.execute<ResultSetHeader>(
     "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
-    [name, email, hashedPassword]
+    [name, email, hashedPassword],
   );
   return result.insertId;
 };

@@ -18,4 +18,6 @@ export type AuthUser = {
   id: number;
   name: string;
   email: string;
+  role: "super_admin" | "admin" | "user_brand";
+  id_brand: number | null;
 };

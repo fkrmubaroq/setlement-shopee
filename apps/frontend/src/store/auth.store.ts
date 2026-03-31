@@ -11,7 +11,7 @@ type AuthState = {
 };
 
 export const useAuthStore = create<AuthState>((set) => ({
-  user: null,
+  user: JSON.parse(localStorage.getItem("user") || "{}"),
   accessToken: localStorage.getItem("accessToken"),
   refreshToken: localStorage.getItem("refreshToken"),
   isAuthenticated: !!localStorage.getItem("accessToken"),
@@ -19,12 +19,18 @@ export const useAuthStore = create<AuthState>((set) => ({
   setAuth: (user, accessToken, refreshToken) => {
     localStorage.setItem("accessToken", accessToken);
     localStorage.setItem("refreshToken", refreshToken);
+    localStorage.setItem("user", JSON.stringify(user));
     set({ user, accessToken, refreshToken, isAuthenticated: true });
   },
 
   logout: () => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
-    set({ user: null, accessToken: null, refreshToken: null, isAuthenticated: false });
+    set({
+      user: null,
+      accessToken: null,
+      refreshToken: null,
+      isAuthenticated: false,
+    });
   },
 }));

@@ -39,7 +39,7 @@ export const createDataShopee = async (
     id_brand: req.id_brand,
     dari_tanggal: req.dari_tanggal,
     sampai_tanggal: req.sampai_tanggal,
-    orders_reference_column: req.orders_reference_column, 
+    orders_reference_column: req.orders_reference_column,
     ...files,
   });
 
@@ -51,10 +51,27 @@ export const createDataShopee = async (
   return newItem;
 };
 
-const deleteUploadedFile = (filename: string) => {
-  const filePath = path.join(process.cwd(), "uploads", filename);
-  if (fs.existsSync(filePath)) {
-    fs.unlinkSync(filePath);
+import { v2 as cloudinary } from "cloudinary";
+
+const deleteUploadedFile = async (fileUrlOrName: string) => {
+  try {
+    if (fileUrlOrName.includes("cloudinary.com")) {
+      const urlParts = fileUrlOrName.split("/upload/");
+      if (urlParts.length === 2) {
+        const withoutVersion = urlParts[1].replace(/^v\d+\//, "");
+        // For raw files, public_id includes the extension
+        await cloudinary.uploader.destroy(withoutVersion, {
+          resource_type: "raw",
+        });
+      }
+    } else {
+      const filePath = path.join(process.cwd(), "uploads", fileUrlOrName);
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+    }
+  } catch (error) {
+    console.error("Failed to delete file:", error);
   }
 };
 
@@ -64,9 +81,9 @@ export const deleteDataShopee = async (id: number): Promise<void> => {
 
   await dataShopeeRepo.deleteDataShopee(id);
 
-  deleteUploadedFile(item.shopee_penghasilan_saya);
-  deleteUploadedFile(item.shopee_pesanan_saya);
-  deleteUploadedFile(item.shopee_biaya_iklan);
+  await deleteUploadedFile(item.shopee_penghasilan_saya);
+  await deleteUploadedFile(item.shopee_pesanan_saya);
+  await deleteUploadedFile(item.shopee_biaya_iklan);
 };
 
 export const updateDataShopee = async (
@@ -83,10 +100,11 @@ export const updateDataShopee = async (
 
   // Delete replaced files
   if (newFiles?.shopee_penghasilan_saya)
-    deleteUploadedFile(item.shopee_penghasilan_saya);
+    await deleteUploadedFile(item.shopee_penghasilan_saya);
   if (newFiles?.shopee_pesanan_saya)
-    deleteUploadedFile(item.shopee_pesanan_saya);
-  if (newFiles?.shopee_biaya_iklan) deleteUploadedFile(item.shopee_biaya_iklan);
+    await deleteUploadedFile(item.shopee_pesanan_saya);
+  if (newFiles?.shopee_biaya_iklan)
+    await deleteUploadedFile(item.shopee_biaya_iklan);
 
   await dataShopeeRepo.updateDataShopee(id, { ...req, ...newFiles });
 
@@ -95,9 +113,10 @@ export const updateDataShopee = async (
   return updated;
 };
 
-export const parsedDataPenghasilanSaya = (fileName: string) => {
+export const parsedDataPenghasilanSaya = async (fileName: string) => {
   const START_HEADER_INDEX = 5;
-  const fromUploads = ExcelReader.fromUploads(fileName);
+  const excelReader = new ExcelReader();
+  const fromUploads = await excelReader.fromUrl(fileName);
   const sheet = fromUploads.sheet("Summary");
 
   const totalYgDilepas = sheet.getCellValue("D48") || 0;
@@ -124,13 +143,13 @@ export const parsedDataPenghasilanSaya = (fileName: string) => {
   };
 };
 
-export const calculateOrders = (
+export const calculateOrders = async (
   fileName: string,
   dataPenghasilanSaya: DataPenghasilanSaya[],
 ) => {
-  const dataOrders = ExcelReader.fromUploads(fileName)
-    .sheet("orders")
-    .toArray() as DataPesananSaya[];
+  const excelReader = new ExcelReader();
+  const reader = await excelReader.fromUrl(fileName);
+  const dataOrders = reader.sheet("orders").toArray() as DataPesananSaya[];
   const dataOrdersObject = arrayToObject(
     dataPenghasilanSaya,
     "No. Pesanan",
@@ -149,7 +168,7 @@ export const calculateOrders = (
 
   return {
     dataOrdersFiltered,
-    dataOrders
+    dataOrders,
   };
 };
 
@@ -169,10 +188,14 @@ export type ReturnDataMatchHppAndOrder = {
 export const getMatchHppAndOrder = (
   dataOrders: DataPesananSaya[],
   dataHpp: HppProdukRow[],
-  ordersReferenceColumn: string
+  ordersReferenceColumn: string,
 ) => {
   const parsedDataHppObj = parsedHppToObj(dataHpp);
-  const parsedDataOrderToObj = parsedOrdersToObj(dataOrders, ordersReferenceColumn);
+  const parsedDataOrderToObj = parsedOrdersToObj(
+    dataOrders,
+    ordersReferenceColumn,
+  );
+  // console.log("XAX", ordersReferenceColumn);
   const temp: DataMatchAndOrder[] = [];
   const tempYgBelumMasuk: DataMatchAndOrder[] = [];
 
@@ -214,13 +237,15 @@ export const getMatchHppAndOrder = (
   };
 };
 
-
-export const parsedDataTotalBiayaIklan = (fileName: string) => {
+export const parsedDataTotalBiayaIklan = async (fileName: string) => {
   const START_HEADER_INDEX = 7;
-  const fromUploads = ExcelReader.fromUploads(fileName);
+  const excelReader = new ExcelReader();
+  const fromUploads = await excelReader.fromUrl(fileName);
   const sheet = fromUploads.sheetIndex(0);
 
-  const dataIncome = sheet.toArray(START_HEADER_INDEX) as DataBiayaIklanShopee[];
+  const dataIncome = sheet.toArray(
+    START_HEADER_INDEX,
+  ) as DataBiayaIklanShopee[];
   let totalBiayaIklan = 0;
   dataIncome.forEach((item) => {
     const biaya = item["Biaya"];
@@ -287,9 +312,7 @@ export function mergeOrdersWithPenghasilan(
       cashback_koin_cofund_penjual: p
         ? cellString(p["Cashback Koin Co-fund disponsori Penjual"])
         : "",
-      ongkir_dibayar_pembeli: p
-        ? cellString(p["Ongkir Dibayar Pembeli"])
-        : "",
+      ongkir_dibayar_pembeli: p ? cellString(p["Ongkir Dibayar Pembeli"]) : "",
       diskon_ongkir_jasa_kirim: p
         ? cellString(p["Diskon Ongkir Ditanggung Jasa Kirim"])
         : "",

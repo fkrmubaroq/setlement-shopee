@@ -5,7 +5,9 @@ dotenv.config();
 
 const envSchema = z.object({
   PORT: z.coerce.number().default(3000),
-  NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
+  NODE_ENV: z
+    .enum(["development", "production", "test"])
+    .default("development"),
 
   DB_HOST: z.string().default("localhost"),
   DB_PORT: z.coerce.number().default(3306),
@@ -18,14 +20,20 @@ const envSchema = z.object({
   JWT_EXPIRES_IN: z.string().default("15m"),
   JWT_REFRESH_EXPIRES_IN: z.string().default("7d"),
 
-  UPLOAD_DIR: z.string().default("./uploads"),
+  CLOUDINARY_CLOUD_NAME: z.string(),
+  CLOUDINARY_API_KEY: z.string(),
+  CLOUDINARY_API_SECRET: z.string(),
+  UPLOAD_DIR: z.string().default("setlement-shopee"),
   MAX_FILE_SIZE: z.coerce.number().default(5242880),
 });
 
 const parsed = envSchema.safeParse(process.env);
 
 if (!parsed.success) {
-  console.error("❌ Invalid environment variables:", parsed.error.flatten().fieldErrors);
+  console.error(
+    "❌ Invalid environment variables:",
+    parsed.error.flatten().fieldErrors,
+  );
   process.exit(1);
 }
 

@@ -18,13 +18,19 @@ export function parsedHppToObj(data: HppProdukRow[]) {
   return temp;
 }
 
-export function parsedOrdersToObj(data: DataPesananSaya[], ordersReferenceColumn: string) {
+export function parsedOrdersToObj(
+  data: DataPesananSaya[],
+  ordersReferenceColumn: string,
+) {
   const temp: Record<string, number> = {};
   data.forEach((item) => {
-    const refVal = String(item[ordersReferenceColumn as keyof DataPesananSaya] || item["Nama Produk"] || "").trim();
-    const key = `${refVal} --- ${item["Nama Variasi"]}`
-      .toLowerCase()
-      .trim();
+    console.log(item[ordersReferenceColumn]);
+    const refVal = String(
+      item[ordersReferenceColumn as keyof DataPesananSaya] ||
+        item["Nama Produk"] ||
+        "",
+    ).trim();
+    const key = `${refVal} --- ${item["Nama Variasi"]}`.toLowerCase().trim();
     temp[key] = (temp[key] || 0) + Number(item["Jumlah"]);
   });
 

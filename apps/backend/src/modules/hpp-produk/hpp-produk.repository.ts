@@ -34,8 +34,8 @@ export const findAllHppProduk = async ({
   }
 
   if (search) {
-    conditions.push("nama_produk LIKE ?");
-    queryParams.push(`%${search}%`);
+    conditions.push("(nama_produk LIKE ? OR variasi_1 LIKE ? OR variasi_2 LIKE ?)");
+    queryParams.push(`%${search}%`, `%${search}%`, `%${search}%`);
   }
 
   if (conditions.length > 0) {

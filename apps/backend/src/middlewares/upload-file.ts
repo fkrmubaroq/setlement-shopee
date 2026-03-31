@@ -12,14 +12,26 @@ const ALLOWED_MIME_TYPES = [
   "application/pdf",
 ];
 
-const storage = multer.diskStorage({
-  destination: (_req, _file, cb) => {
-    cb(null, env.UPLOAD_DIR);
-  },
-  filename: (_req, file, cb) => {
-    const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-    const ext = path.extname(file.originalname);
-    cb(null, `${file.fieldname}-${uniqueSuffix}${ext}`);
+import { v2 as cloudinary } from "cloudinary";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
+
+cloudinary.config({
+  cloud_name: env.CLOUDINARY_CLOUD_NAME,
+  api_key: env.CLOUDINARY_API_KEY,
+  api_secret: env.CLOUDINARY_API_SECRET,
+});
+
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: async (_req, file) => {
+    const ext = path.extname(file.originalname).substring(1);
+    const filename = `${file.fieldname}-${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+    const isImage = file.mimetype.startsWith("image/");
+    return {
+      folder: env.UPLOAD_DIR,
+      resource_type: isImage ? "image" : "raw",
+      public_id: isImage ? filename : `${filename}.${ext}`,
+    };
   },
 });
 
@@ -39,6 +51,9 @@ export const upload = multer({
   },
 });
 
-export const uploadSingle = (fieldName: string): RequestHandler => upload.single(fieldName);
-export const uploadMultiple = (fieldName: string, maxCount: number): RequestHandler =>
-  upload.array(fieldName, maxCount);
+export const uploadSingle = (fieldName: string): RequestHandler =>
+  upload.single(fieldName);
+export const uploadMultiple = (
+  fieldName: string,
+  maxCount: number,
+): RequestHandler => upload.array(fieldName, maxCount);

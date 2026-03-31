@@ -37,7 +37,7 @@ export function HppProdukTable() {
   const isUserBrand = user?.role === "user_brand";
 
   const [page, setPage] = useState(1);
-  const [limit] = useState(10);
+  const [limit, setLimit] = useState(10);
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   // Determine initial brand if user_brand
@@ -286,9 +286,30 @@ export function HppProdukTable() {
       </CardContent>
       {meta && meta.totalPages > 0 && (
         <div className="flex flex-col sm:flex-row items-center justify-between p-4 border-t bg-gray-50 dark:bg-gray-900/50 rounded-b-lg gap-4">
-          <div className="text-sm text-gray-500 font-medium">
-            Halaman {meta.page} dari {meta.totalPages} (Total: {meta.total}{" "}
-            produk)
+          <div className="flex flex-col sm:flex-row items-center gap-4">
+            <div className="text-sm text-gray-500 font-medium">
+              Halaman {meta.page} dari {meta.totalPages} (Total: {meta.total} produk)
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-500">Per halaman:</span>
+              <Select
+                value={limit.toString()}
+                onValueChange={(val) => {
+                  setLimit(Number(val));
+                  setPage(1);
+                }}
+              >
+                <SelectTrigger className="h-8 w-[70px] bg-white dark:bg-gray-800">
+                  <SelectValue placeholder="10" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="10">10</SelectItem>
+                  <SelectItem value="20">20</SelectItem>
+                  <SelectItem value="50">50</SelectItem>
+                  <SelectItem value="100">100</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
           <div className="flex items-center gap-2">
             <Button

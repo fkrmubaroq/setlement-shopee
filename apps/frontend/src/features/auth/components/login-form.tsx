@@ -15,12 +15,16 @@ export const LoginForm = () => {
 
   const loginMutation = useLogin();
 
-  const onSubmit = (data: LoginFormValues) => {
-    loginMutation.mutate(data);
+  const onSubmit = async (data: LoginFormValues) => {
+    const response = await loginMutation.mutate(data);
+    console.log(response);
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 w-full max-w-sm">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col gap-4 w-full max-w-sm"
+    >
       <h2 className="text-2xl font-bold text-center">Login</h2>
 
       <div className="flex flex-col gap-1">

@@ -49,17 +49,17 @@ export const getDataShopeeById = async (
 
     // Example usage of ExcelReader with chaining
     const { data: dataPenghasilanSaya, total: totalYgDilepas } =
-      dataShopeeService.parsedDataPenghasilanSaya(
+      await dataShopeeService.parsedDataPenghasilanSaya(
         dataShopee.shopee_penghasilan_saya,
       );
 
     const { dataOrdersFiltered, dataOrders } =
-      dataShopeeService.calculateOrders(
+      await dataShopeeService.calculateOrders(
         dataShopee.shopee_pesanan_saya,
         dataPenghasilanSaya,
       );
 
-    const totalBiayaIklan = dataShopeeService.parsedDataTotalBiayaIklan(
+    const totalBiayaIklan = await dataShopeeService.parsedDataTotalBiayaIklan(
       dataShopee.shopee_biaya_iklan,
     );
     const ppnBiayaIklan = totalBiayaIklan * 0.11;
@@ -126,9 +126,9 @@ export const createDataShopee = async (
     };
 
     const filePaths = {
-      shopee_penghasilan_saya: files.shopee_penghasilan_saya[0].filename,
-      shopee_pesanan_saya: files.shopee_pesanan_saya[0].filename,
-      shopee_biaya_iklan: files.shopee_biaya_iklan[0].filename,
+      shopee_penghasilan_saya: files.shopee_penghasilan_saya[0].path,
+      shopee_pesanan_saya: files.shopee_pesanan_saya[0].path,
+      shopee_biaya_iklan: files.shopee_biaya_iklan[0].path,
     };
 
     const data = await dataShopeeService.createDataShopee(body, filePaths);
@@ -137,17 +137,6 @@ export const createDataShopee = async (
     next(error);
   }
 };
-
-/**
- * Helper function to parse specific cell from uploads
- */
-export function parsedDataFromExcel(
-  fileName: string,
-  sheet: string,
-  cell: string,
-) {
-  return ExcelReader.fromUploads(fileName).sheet(sheet).getCellValue(cell);
-}
 
 export const deleteDataShopee = async (
   req: Request<{ id: string }>,
@@ -183,12 +172,11 @@ export const updateDataShopee = async (
 
     const newFiles: any = {};
     if (files?.shopee_penghasilan_saya?.[0])
-      newFiles.shopee_penghasilan_saya =
-        files.shopee_penghasilan_saya[0].filename;
+      newFiles.shopee_penghasilan_saya = files.shopee_penghasilan_saya[0].path;
     if (files?.shopee_pesanan_saya?.[0])
-      newFiles.shopee_pesanan_saya = files.shopee_pesanan_saya[0].filename;
+      newFiles.shopee_pesanan_saya = files.shopee_pesanan_saya[0].path;
     if (files?.shopee_biaya_iklan?.[0])
-      newFiles.shopee_biaya_iklan = files.shopee_biaya_iklan[0].filename;
+      newFiles.shopee_biaya_iklan = files.shopee_biaya_iklan[0].path;
 
     const data = await dataShopeeService.updateDataShopee(
       id,

@@ -162,7 +162,7 @@ export function DataShopeeTable() {
                       </TableCell>
                       <TableCell>
                         <a
-                          href={`${API_UPLOAD_URL}/${item.shopee_penghasilan_saya}`}
+                          href={`${item.shopee_penghasilan_saya}`}
                           target="_blank"
                           rel="noreferrer"
                           className="inline-flex items-center gap-1 text-xs text-blue-500 hover:underline"
@@ -172,7 +172,7 @@ export function DataShopeeTable() {
                       </TableCell>
                       <TableCell>
                         <a
-                          href={`${API_UPLOAD_URL}/${item.shopee_pesanan_saya}`}
+                          href={`${item.shopee_pesanan_saya}`}
                           target="_blank"
                           rel="noreferrer"
                           className="inline-flex items-center gap-1 text-xs text-orange-500 hover:underline"
@@ -182,7 +182,7 @@ export function DataShopeeTable() {
                       </TableCell>
                       <TableCell>
                         <a
-                          href={`${API_UPLOAD_URL}/${item.shopee_biaya_iklan}`}
+                          href={`${item.shopee_biaya_iklan}`}
                           target="_blank"
                           rel="noreferrer"
                           className="inline-flex items-center gap-1 text-xs text-red-500 hover:underline"

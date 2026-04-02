@@ -13,7 +13,14 @@ import { useGetBrands } from "@/features/brand/hooks/use-brand";
 import type { DataShopee } from "@setlement-shopee/types";
 import { useNavigate } from "@tanstack/react-router";
 import { FileText, Pencil, Trash2 } from "lucide-react";
-import { useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import {
   useDeleteDataShopee,
@@ -22,6 +29,7 @@ import {
 import { DataShopeeEditDialog } from "./data-shopee-edit-dialog";
 import { DataShopeeFormDialog } from "./data-shopee-form-dialog";
 
+import { formatRupiah } from "@/lib/utils";
 import { useAuthStore } from "@/store/auth.store";
 
 export function DataShopeeTable() {
@@ -32,6 +40,34 @@ export function DataShopeeTable() {
   const deleteMutation = useDeleteDataShopee();
 
   const [editItem, setEditItem] = useState<DataShopee | null>(null);
+
+  const [selectedBrand, setSelectedBrand] = useState<string>("all");
+  const [selectedPeriode, setSelectedPeriode] = useState<string>("all");
+
+  const uniquePeriods = useMemo(() => {
+    if (!dataShopeeList) return [];
+    const periods = new Set<string>();
+    dataShopeeList.forEach((item) => {
+      const date = new Date(item.dari_tanggal);
+      const monthYear = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+      periods.add(monthYear);
+    });
+    return Array.from(periods).sort().reverse();
+  }, [dataShopeeList]);
+
+  const filteredData = useMemo(() => {
+    if (!dataShopeeList) return [];
+    return dataShopeeList.filter((item) => {
+      const matchBrand = selectedBrand === "all" || item.id_brand.toString() === selectedBrand;
+      const date = new Date(item.dari_tanggal);
+      const itemPeriode = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+      const matchPeriode = selectedPeriode === "all" || itemPeriode === selectedPeriode;
+      return matchBrand && matchPeriode;
+    });
+  }, [dataShopeeList, selectedBrand, selectedPeriode]);
+
+  const totalSharingBrand = filteredData.reduce((acc, item) => acc + (item.sharing_brand || 0), 0);
+  const totalSharingPlatform = filteredData.reduce((acc, item) => acc + (item.sharing_platform || 0), 0);
 
   const getBrandName = (brandId: number) => {
     if (!brands) return "Unknown";
@@ -69,8 +105,27 @@ export function DataShopeeTable() {
 
   return (
     <>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <Card className="border-none shadow-md">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-gray-500">Total Sharing Brand</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-blue-600">{formatRupiah(totalSharingBrand)}</div>
+          </CardContent>
+        </Card>
+        <Card className="border-none shadow-md">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-gray-500">Total Sharing Platform</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-orange-600">{formatRupiah(totalSharingPlatform)}</div>
+          </CardContent>
+        </Card>
+      </div>
+
       <Card className="border-none shadow-md">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-7">
+        <CardHeader className="flex flex-col md:flex-row items-start md:items-center justify-between space-y-4 md:space-y-0 pb-7">
           <div className="space-y-1">
             <CardTitle className="text-xl font-bold text-gray-800 dark:text-gray-100">
               Data Shopee
@@ -79,7 +134,34 @@ export function DataShopeeTable() {
               Daftar unggahan data Excel dari Shopee Seller Centre.
             </p>
           </div>
-          {isSuperAdmin && <DataShopeeFormDialog />}
+          <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
+            <Select value={selectedBrand} onValueChange={setSelectedBrand}>
+              <SelectTrigger className="w-full md:w-[180px]">
+                <SelectValue placeholder="Semua Brand" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Semua Brand</SelectItem>
+                {brands?.map(b => <SelectItem key={b.id} value={b.id.toString()}>{b.nama_brand}</SelectItem>)}
+              </SelectContent>
+            </Select>
+
+            <Select value={selectedPeriode} onValueChange={setSelectedPeriode}>
+              <SelectTrigger className="w-full md:w-[180px]">
+                <SelectValue placeholder="Semua Periode" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Semua Periode</SelectItem>
+                {uniquePeriods.map(p => {
+                  const [y, m] = p.split("-");
+                  const date = new Date(parseInt(y), parseInt(m) - 1);
+                  const label = date.toLocaleDateString("id-ID", { month: "long", year: "numeric" });
+                  return <SelectItem key={p} value={p}>{label}</SelectItem>
+                })}
+              </SelectContent>
+            </Select>
+
+            {isSuperAdmin && <DataShopeeFormDialog />}
+          </div>
         </CardHeader>
         <CardContent className="p-0">
           <div className="overflow-x-auto">
@@ -92,7 +174,8 @@ export function DataShopeeTable() {
                   <TableHead>File Penghasilan</TableHead>
                   <TableHead>File Pesanan</TableHead>
                   <TableHead>File Iklan</TableHead>
-                  <TableHead className="text-right">Tgl Unggah</TableHead>
+                  <TableHead>Brand</TableHead>
+                  <TableHead>Sharing Platform</TableHead>
                   <TableHead className="text-center">Aksi</TableHead>
                 </TableRow>
               </TableHeader>
@@ -108,6 +191,12 @@ export function DataShopeeTable() {
                       </TableCell>
                       <TableCell>
                         <Skeleton className="h-4 w-[150px]" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-4 w-8" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-4 w-8" />
                       </TableCell>
                       <TableCell>
                         <Skeleton className="h-4 w-8" />
@@ -135,7 +224,7 @@ export function DataShopeeTable() {
                       Gagal mengambil data shopee.
                     </TableCell>
                   </TableRow>
-                ) : dataShopeeList?.length === 0 ? (
+                ) : filteredData.length === 0 ? (
                   <TableRow>
                     <TableCell
                       colSpan={8}
@@ -145,7 +234,7 @@ export function DataShopeeTable() {
                     </TableCell>
                   </TableRow>
                 ) : (
-                  dataShopeeList?.map((item) => (
+                  filteredData.map((item) => (
                     <TableRow
                       key={item.id}
                       className="hover:bg-gray-50/50 dark:hover:bg-gray-800/50"
@@ -190,8 +279,11 @@ export function DataShopeeTable() {
                           <FileText className="h-3 w-3" /> View
                         </a>
                       </TableCell>
-                      <TableCell className="text-right text-gray-500 text-xs">
-                        {item.created_at ? formatDate(item.created_at) : "-"}
+                      <TableCell className="text-center font-medium text-xs">
+                        {item.sharing_brand ? formatRupiah(item.sharing_brand) : "-"}
+                      </TableCell>
+                      <TableCell className="text-center font-medium text-xs">
+                        {item.sharing_platform ? formatRupiah(item.sharing_platform) : "-"}
                       </TableCell>
                       <TableCell className="text-center">
                         <div className="flex items-center justify-center gap-1">

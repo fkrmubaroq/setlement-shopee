@@ -57,7 +57,25 @@ function DataShopeeDetailRoute() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-2">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-2">
+        <Card className="border-gray-200">
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium text-gray-500">Revenue</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-xl font-bold text-gray-800 dark:text-gray-200">{formatRupiah(data.total_revenue)}</div>
+          </CardContent>
+        </Card>
+
+        <Card className="border-gray-200">
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium text-gray-500">Biaya Campaign</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-xl font-bold text-gray-800 dark:text-gray-200">{formatRupiah(data.total_biaya_campaign)}</div>
+          </CardContent>
+        </Card>
+
         <Card className="border-gray-200">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-gray-500">Pendapatan Bersih (Dilepas)</CardTitle>
@@ -339,7 +357,7 @@ function DataShopeeDetailRoute() {
                                 {row.harga_setelah_diskon || '—'}
                               </TableCell>
                               <TableCell className="text-sm align-middle whitespace-nowrap">
-                                {row.harga_setelah_diskon * Number(row.jumlah) || '—'}
+                                {row.harga_setelah_diskon ? formatRupiah(Number(row.harga_setelah_diskon) * Number(row.jumlah)) : '—'}
                               </TableCell>
                               <TableCell className="text-sm align-middle">
                                 {row.metode_pembayaran || '—'}

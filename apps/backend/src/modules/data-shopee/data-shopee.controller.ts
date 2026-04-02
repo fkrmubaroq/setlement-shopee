@@ -1,4 +1,3 @@
-import { ExcelReader } from "@/utils/excel";
 import type {
   ApiResponse,
   CreateDataShopeeRequest,
@@ -8,7 +7,6 @@ import type {
 import type { NextFunction, Request, Response } from "express";
 import { AppError } from "../../middlewares/error-handler";
 import { sendCreated, sendSuccess } from "../../utils/response";
-import { getHppProdukByBrandId } from "../hpp-produk/hpp-produk.service";
 import * as dataShopeeService from "./data-shopee.service";
 
 export const getAllDataShopee = async (
@@ -46,56 +44,14 @@ export const getDataShopeeById = async (
         403,
       );
     }
+    const result = await dataShopeeService.calculateNetProfit({
+      file_penghasilan_saya: dataShopee.shopee_penghasilan_saya,
+      file_biaya_iklan: dataShopee.shopee_biaya_iklan,
+      file_pesanan_saya: dataShopee.shopee_pesanan_saya,
+      orders_reference_column: dataShopee.orders_reference_column || undefined,
+      id_brand: dataShopee.id_brand,
+    });
 
-    // Example usage of ExcelReader with chaining
-    const { data: dataPenghasilanSaya, total: totalYgDilepas } =
-      await dataShopeeService.parsedDataPenghasilanSaya(
-        dataShopee.shopee_penghasilan_saya,
-      );
-
-    const { dataOrdersFiltered, dataOrders } =
-      await dataShopeeService.calculateOrders(
-        dataShopee.shopee_pesanan_saya,
-        dataPenghasilanSaya,
-      );
-
-    const totalBiayaIklan = await dataShopeeService.parsedDataTotalBiayaIklan(
-      dataShopee.shopee_biaya_iklan,
-    );
-    const ppnBiayaIklan = totalBiayaIklan * 0.11;
-    const dataHpp = await getHppProdukByBrandId(dataShopee.id_brand);
-
-    const dataMatchHppAndOrders = dataShopeeService.getMatchHppAndOrder(
-      dataOrdersFiltered,
-      dataHpp,
-      dataShopee.orders_reference_column || "Nama Produk",
-    );
-    const rincianPesanan = dataShopeeService.mergeOrdersWithPenghasilan(
-      dataOrdersFiltered,
-      dataPenghasilanSaya,
-    );
-    const netProfit =
-      totalYgDilepas -
-      (dataMatchHppAndOrders.total_hpp + totalBiayaIklan + ppnBiayaIklan);
-    const sharing = {
-      brand: netProfit * 0.7,
-      platform: netProfit * 0.3,
-    };
-    const result = {
-      total_hpp: dataMatchHppAndOrders.total_hpp,
-      total_yg_dilepas: totalYgDilepas,
-      total_biaya_iklan: totalBiayaIklan,
-      ppn_biaya_iklan: ppnBiayaIklan,
-      sharing,
-      net_profit: netProfit,
-      total_produk_yg_sudah_masuk:
-        dataMatchHppAndOrders.total_produk_yg_sudah_masuk,
-      total_produk_yg_belum_masuk:
-        dataMatchHppAndOrders.total_produk_yg_belum_masuk,
-      detail: dataMatchHppAndOrders.data,
-      detail_yg_belum_masuk: dataMatchHppAndOrders.data_yg_belum_masuk,
-      rincian_pesanan: rincianPesanan,
-    };
     res.status(200).json(result).end();
   } catch (error) {
     next(error);
@@ -118,18 +74,32 @@ export const createDataShopee = async (
       throw new AppError("Ketiga file Shopee wajib diunggah", 400);
     }
 
-    const body: CreateDataShopeeRequest = {
-      id_brand: parseInt(req.body.id_brand, 10),
-      dari_tanggal: req.body.dari_tanggal,
-      sampai_tanggal: req.body.sampai_tanggal,
-      orders_reference_column: req.body.orders_reference_column,
-    };
-
+    const brandId = parseInt(req.body.id_brand, 10);
     const filePaths = {
       shopee_penghasilan_saya: files.shopee_penghasilan_saya[0].path,
       shopee_pesanan_saya: files.shopee_pesanan_saya[0].path,
       shopee_biaya_iklan: files.shopee_biaya_iklan[0].path,
     };
+
+
+    const result = await dataShopeeService.calculateNetProfit({
+      file_penghasilan_saya: filePaths.shopee_penghasilan_saya,
+      file_biaya_iklan: filePaths.shopee_biaya_iklan,
+      file_pesanan_saya: filePaths.shopee_pesanan_saya,
+      orders_reference_column: req.body.orders_reference_column || undefined,
+      id_brand: brandId,
+    });
+
+
+    const body: CreateDataShopeeRequest = {
+      id_brand: brandId,
+      dari_tanggal: req.body.dari_tanggal,
+      sampai_tanggal: req.body.sampai_tanggal,
+      orders_reference_column: req.body.orders_reference_column,
+      sharing_brand: result.sharing.brand,
+      sharing_platform: result.sharing.platform,
+    };
+
 
     const data = await dataShopeeService.createDataShopee(body, filePaths);
     sendCreated(res, data, "Berhasil menambahkan data shopee");

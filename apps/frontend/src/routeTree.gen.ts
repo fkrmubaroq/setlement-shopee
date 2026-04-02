@@ -18,7 +18,6 @@ import { Route as AdminDataShopeeIndexRouteImport } from './routes/admin/data-sh
 import { Route as AdminDataShopeeIdRouteImport } from './routes/admin/data-shopee/$id'
 
 const RegisterLazyRouteImport = createFileRoute('/register')()
-const LoginLazyRouteImport = createFileRoute('/login')()
 const IndexLazyRouteImport = createFileRoute('/')()
 
 const RegisterLazyRoute = RegisterLazyRouteImport.update({
@@ -26,11 +25,6 @@ const RegisterLazyRoute = RegisterLazyRouteImport.update({
   path: '/register',
   getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/register.lazy').then((d) => d.Route))
-const LoginLazyRoute = LoginLazyRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => rootRouteImport,
-} as any).lazy(() => import('./routes/login.lazy').then((d) => d.Route))
 const AdminRouteRoute = AdminRouteRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -65,7 +59,6 @@ const AdminDataShopeeIdRoute = AdminDataShopeeIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
   '/admin': typeof AdminRouteRouteWithChildren
-  '/login': typeof LoginLazyRoute
   '/register': typeof RegisterLazyRoute
   '/admin/brand': typeof AdminBrandRoute
   '/admin/hpp-produk': typeof AdminHppProdukRoute
@@ -75,7 +68,6 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
   '/admin': typeof AdminRouteRouteWithChildren
-  '/login': typeof LoginLazyRoute
   '/register': typeof RegisterLazyRoute
   '/admin/brand': typeof AdminBrandRoute
   '/admin/hpp-produk': typeof AdminHppProdukRoute
@@ -86,7 +78,6 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexLazyRoute
   '/admin': typeof AdminRouteRouteWithChildren
-  '/login': typeof LoginLazyRoute
   '/register': typeof RegisterLazyRoute
   '/admin/brand': typeof AdminBrandRoute
   '/admin/hpp-produk': typeof AdminHppProdukRoute
@@ -98,7 +89,6 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/admin'
-    | '/login'
     | '/register'
     | '/admin/brand'
     | '/admin/hpp-produk'
@@ -108,7 +98,6 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/admin'
-    | '/login'
     | '/register'
     | '/admin/brand'
     | '/admin/hpp-produk'
@@ -118,7 +107,6 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/admin'
-    | '/login'
     | '/register'
     | '/admin/brand'
     | '/admin/hpp-produk'
@@ -129,7 +117,6 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
   AdminRouteRoute: typeof AdminRouteRouteWithChildren
-  LoginLazyRoute: typeof LoginLazyRoute
   RegisterLazyRoute: typeof RegisterLazyRoute
 }
 
@@ -140,13 +127,6 @@ declare module '@tanstack/react-router' {
       path: '/register'
       fullPath: '/register'
       preLoaderRoute: typeof RegisterLazyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginLazyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin': {
@@ -215,7 +195,6 @@ const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
   AdminRouteRoute: AdminRouteRouteWithChildren,
-  LoginLazyRoute: LoginLazyRoute,
   RegisterLazyRoute: RegisterLazyRoute,
 }
 export const routeTree = rootRouteImport

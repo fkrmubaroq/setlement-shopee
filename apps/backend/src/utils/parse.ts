@@ -24,7 +24,6 @@ export function parsedOrdersToObj(
 ) {
   const temp: Record<string, number> = {};
   data.forEach((item) => {
-    console.log(item[ordersReferenceColumn]);
     const refVal = String(
       item[ordersReferenceColumn as keyof DataPesananSaya] ||
         item["Nama Produk"] ||

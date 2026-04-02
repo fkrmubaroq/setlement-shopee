@@ -16,8 +16,7 @@ export const LoginForm = () => {
   const loginMutation = useLogin();
 
   const onSubmit = async (data: LoginFormValues) => {
-    const response = await loginMutation.mutate(data);
-    console.log(response);
+    loginMutation.mutate(data);
   };
 
   return (

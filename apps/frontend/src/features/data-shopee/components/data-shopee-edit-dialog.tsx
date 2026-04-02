@@ -23,8 +23,8 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { useGetBrands } from "@/features/brand/hooks/use-brand";
-import type { DataShopee } from "@setlement-shopee/types";
 import { zodResolver } from "@hookform/resolvers/zod";
+import type { DataShopee } from "@setlement-shopee/types";
 import { UploadCloud } from "lucide-react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";

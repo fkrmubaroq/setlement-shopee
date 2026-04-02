@@ -12,6 +12,7 @@ export const useLogin = () => {
       if (response.data) {
         const { auth, user } = response.data;
         setAuth(user, auth.accessToken, auth.refreshToken);
+        document.location = "/admin"
       }
     },
   });

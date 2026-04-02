@@ -9,10 +9,12 @@ import type {
   DataRincianPesanan,
   DataShopee,
 } from "@setlement-shopee/types";
+import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
 import path from "path";
 import { AppError } from "../../middlewares/error-handler";
 import { HppProdukRow } from "../hpp-produk/hpp-produk.repository";
+import { getHppProdukByBrandId } from "../hpp-produk/hpp-produk.service";
 import * as dataShopeeRepo from "./data-shopee.repository";
 
 export const getAllDataShopee = async (): Promise<DataShopee[]> => {
@@ -33,13 +35,15 @@ export const createDataShopee = async (
     shopee_penghasilan_saya: string;
     shopee_pesanan_saya: string;
     shopee_biaya_iklan: string;
-  },
+  }
 ): Promise<DataShopee> => {
   const insertId = await dataShopeeRepo.createDataShopee({
     id_brand: req.id_brand,
     dari_tanggal: req.dari_tanggal,
     sampai_tanggal: req.sampai_tanggal,
     orders_reference_column: req.orders_reference_column,
+    sharing_brand: req.sharing_brand,
+    sharing_platform: req.sharing_platform,
     ...files,
   });
 
@@ -51,7 +55,6 @@ export const createDataShopee = async (
   return newItem;
 };
 
-import { v2 as cloudinary } from "cloudinary";
 
 const deleteUploadedFile = async (fileUrlOrName: string) => {
   try {
@@ -119,7 +122,9 @@ export const parsedDataPenghasilanSaya = async (fileName: string) => {
   const fromUploads = await excelReader.fromUrl(fileName);
   const sheet = fromUploads.sheet("Summary");
 
+  const totalRevenue = sheet.getCellValue("D11") || 0;
   const totalYgDilepas = sheet.getCellValue("D48") || 0;
+  const totalBiayaCampaign = sheet.getCellValue("D34") || 0;
   const detail = sheet.sheet("Income").toArray();
   const header = detail[START_HEADER_INDEX];
   const dataIncome = sheet
@@ -140,6 +145,8 @@ export const parsedDataPenghasilanSaya = async (fileName: string) => {
   return {
     total: totalPenghasilan,
     data: dataIncome,
+    totalRevenue,
+    totalBiayaCampaign
   };
 };
 
@@ -346,4 +353,64 @@ export function mergeOrdersWithPenghasilan(
       total_penghasilan: p ? cellString(p["Total Penghasilan"]) : "",
     };
   });
+}
+
+export async function calculateNetProfit({ file_penghasilan_saya, file_biaya_iklan, file_pesanan_saya, orders_reference_column, id_brand }: {
+  file_penghasilan_saya: string;
+  file_biaya_iklan: string;
+  file_pesanan_saya: string;
+  orders_reference_column?: string;
+  id_brand: number;
+}) {
+  const { data: dataPenghasilanSaya, total: totalYgDilepas, totalRevenue, totalBiayaCampaign } =
+    await parsedDataPenghasilanSaya(
+      file_penghasilan_saya,
+    );
+
+  const { dataOrdersFiltered, dataOrders } =
+    await calculateOrders(
+      file_pesanan_saya,
+      dataPenghasilanSaya,
+    );
+
+  const totalBiayaIklan = await parsedDataTotalBiayaIklan(
+    file_biaya_iklan,
+  );
+  const ppnBiayaIklan = totalBiayaIklan * 0.11;
+  const dataHpp = await getHppProdukByBrandId(id_brand);
+
+  const dataMatchHppAndOrders = getMatchHppAndOrder(
+    dataOrdersFiltered,
+    dataHpp,
+    orders_reference_column || "Nama Produk",
+  );
+  const rincianPesanan =  mergeOrdersWithPenghasilan(
+    dataOrdersFiltered,
+    dataPenghasilanSaya,
+  );
+  const netProfit =
+    totalYgDilepas -
+    (dataMatchHppAndOrders.total_hpp + totalBiayaIklan + ppnBiayaIklan);
+  const sharing = {
+    brand: netProfit * 0.7,
+    platform: netProfit * 0.3,
+  };
+
+  return {
+    total_hpp: dataMatchHppAndOrders.total_hpp,
+    total_yg_dilepas: totalYgDilepas,
+    total_biaya_iklan: totalBiayaIklan,
+    total_revenue: totalRevenue,
+    total_biaya_campaign: totalBiayaCampaign,
+    ppn_biaya_iklan: ppnBiayaIklan,
+    sharing,
+    net_profit: netProfit,
+    total_produk_yg_sudah_masuk:
+      dataMatchHppAndOrders.total_produk_yg_sudah_masuk,
+    total_produk_yg_belum_masuk:
+      dataMatchHppAndOrders.total_produk_yg_belum_masuk,
+    detail: dataMatchHppAndOrders.data,
+    detail_yg_belum_masuk: dataMatchHppAndOrders.data_yg_belum_masuk,
+    rincian_pesanan: rincianPesanan,
+  };
 }

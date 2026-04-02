@@ -1,5 +1,4 @@
 import {
-  BanknoteArrowDownIcon,
   BoxIcon,
   Command,
   FileSpreadsheetIcon,
@@ -31,11 +30,6 @@ export const sidebarData = {
     {
       section: "Transaction",
       menus: [
-        {
-          title: "Hitung Net Profit",
-          url: "/admin/transaction/net-profit",
-          icon: BanknoteArrowDownIcon,
-        },
         {
           title: "Data Shopee",
           url: "/admin/data-shopee",

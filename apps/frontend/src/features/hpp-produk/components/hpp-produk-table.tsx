@@ -29,6 +29,7 @@ import { ClearHppProdukDialog } from "./clear-hpp-produk-dialog";
 import { CsvUploadDialog } from "./csv-upload-dialog";
 import { HppProdukFormSheet } from "./hpp-produk-form-dialog";
 
+import { formatRupiah } from "@/lib/utils";
 import { useAuthStore } from "@/store/auth.store";
 
 export function HppProdukTable() {
@@ -89,15 +90,6 @@ export function HppProdukTable() {
         },
       );
     }
-  };
-
-  const formatRupiah = (angka: string) => {
-    return new Intl.NumberFormat("id-ID", {
-      style: "currency",
-      currency: "IDR",
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(Number(angka));
   };
 
   const getBrandName = (brandId: number) => {

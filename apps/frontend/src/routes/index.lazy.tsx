@@ -1,36 +1,16 @@
-import { useAuthStore } from "@/store";
+import { LoginForm } from "@/features/auth";
 import { createLazyFileRoute } from "@tanstack/react-router";
 
 export const Route = createLazyFileRoute("/")({
-  component: HomePage,
+  component: LoginPage,
 });
 
-function HomePage() {
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  const user = useAuthStore((state) => state.user);
-
+function LoginPage() {
   return (
-    <div className="flex flex-col items-center justify-center py-16">
-      <h1 className="text-4xl font-bold text-gray-900 mb-4">
-        Settlement Shopee
-      </h1>
-      <p className="text-lg text-gray-600 mb-8">
-        Manage your Shopee settlements efficiently
-      </p>
-
-      {isAuthenticated ? (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center">
-          <p className="text-gray-700">
-            Welcome back, <span className="font-semibold">{user?.name}</span>!
-          </p>
-        </div>
-      ) : (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center">
-          <p className="text-gray-600">
-            Please log in or register to get started.
-          </p>
-        </div>
-      )}
+    <div className="flex items-center justify-center py-16">
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+        <LoginForm />
+      </div>
     </div>
   );
 }

@@ -48,7 +48,6 @@ export function CsvUploadDialog() {
 
     const id_brand = Number(selectedBrand);
 
-    console.log("asdasd")
     Papa.parse(file, {
       header: true,
       skipEmptyLines: true,

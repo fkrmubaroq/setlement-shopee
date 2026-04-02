@@ -7,7 +7,6 @@ type DataShopeeRow = RowDataPacket & DataShopee;
 export const createDataShopee = async (
   data: Omit<DataShopee, "id" | "created_at" | "updated_at">,
 ): Promise<number> => {
-  console.log("DAA", data);
   const [result] = await pool.execute<ResultSetHeader>(
     `INSERT INTO data_shopee (
       id_brand, 
@@ -16,8 +15,10 @@ export const createDataShopee = async (
       shopee_penghasilan_saya, 
       shopee_pesanan_saya, 
       shopee_biaya_iklan,
-      orders_reference_column
-    ) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      orders_reference_column,
+      sharing_brand,
+      sharing_platform
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       data.id_brand,
       data.dari_tanggal,
@@ -26,6 +27,8 @@ export const createDataShopee = async (
       data.shopee_pesanan_saya,
       data.shopee_biaya_iklan,
       data.orders_reference_column ?? null,
+      data.sharing_brand,
+      data.sharing_platform
     ],
   );
   return result.insertId;

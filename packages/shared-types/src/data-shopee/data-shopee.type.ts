@@ -21,7 +21,10 @@ export const CreateDataShopeeRequestSchema = z.object({
   // Files will be handled via FormData in multipart request
 });
 
-export type DataShopee = z.infer<typeof DataShopeeSchema>;
+export type DataShopee = z.infer<typeof DataShopeeSchema> & {
+  sharing_brand: number;
+  sharing_platform: number;
+};
 export type CreateDataShopeeRequest = z.infer<typeof CreateDataShopeeRequestSchema>;
 
 export type DataPenghasilanSaya = {
@@ -177,6 +180,8 @@ export type DataDetailShopee = {
   total_hpp: number
   total_yg_dilepas: number
   total_biaya_iklan: number
+  total_revenue: number
+  total_biaya_campaign: number
   ppn_biaya_iklan: number
   sharing: {
     brand: number
